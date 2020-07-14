@@ -1,2 +1,151 @@
-<h1>Hello world dx-ball</h1>
-<img src="./images/intro_background.gif" alt="">
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DX-BALL</title>
+    <link rel='stylesheet' href='/css/bootstrap.min.css' />
+    <script type="text/javascript" src="/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="index.css">
+    <script type="text/javascript" src="index.js"></script>
+</head>
+
+<body>
+    <!-- Background image -->
+    <img src="./images/intro_background.gif" class="centered">
+
+
+    <!-- Register - login - forgot password -->
+    <div id="register-grp" class="d-none">
+        <div class="d-flex  align-items-center flex-column centered button-group">
+            <div class="p-2">
+                <button type="button" class="btn btn-outline-primary d-block" data-toggle="modal"
+                    data-target="#registerModal">
+                    Register
+                </button>
+            </div>
+            <div class="p-2">
+                <button type="button" class="btn btn-outline-success d-block mt-3" data-toggle="modal"
+                    data-target="#loginModal">
+                    Login
+                </button>
+            </div>
+            <div class="p-2">
+                <button type="button" class="btn btn-outline-secondary d-block mt-3" data-toggle="modal"
+                    data-target="#forgotModal">
+                    Forgot password
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Play button -->
+    <div id="play-grp" class="d-none">
+        <div class="d-flex align-items-center flex-column centered button-group">
+            <div class="p-2">
+                <button type="button" class="btn btn-outline-primary d-block">
+                    Play
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Register dialog -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="register-email" class="col-form-label">Email:</label>
+                            <input type="text" class="form-control" id="register-email">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" id="register-password">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Register</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Login dialog -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="login-email" class="col-form-label">Email:</label>
+                            <input type="text" class="form-control" id="login-email">
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" id="login-password">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- forgot password dialog -->
+    <div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgotModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forogtModalLabel">Forgot password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="forgot-email" class="col-form-label">Email:</label>
+                            <input type="text" class="form-control" id="forgot-email">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Reset Password</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</body>
+
+</html>

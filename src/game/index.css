@@ -1,0 +1,14 @@
+body {
+    background-color: black;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.button-group {
+    z-index: 1000;
+}

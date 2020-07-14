@@ -1,3 +1,5 @@
+const process = require("process")
+
 module.exports.Constants = {
-    port : process.env.PORT
-};
+	port : process.env.PORT
+}

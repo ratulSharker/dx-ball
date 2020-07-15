@@ -20,9 +20,9 @@ app.use(morgan("short"))
 
 // Handling game-play
 app.use("/", express.static(path.join(__dirname, "game")))
-app.use("/css", express.static(__dirname + "../../node_modules/bootstrap/dist/css")) // redirect CSS bootstrap
-app.use("/js",  express.static(__dirname + "../../node_modules/bootstrap/dist/js")) // redirect JS bootstrap
-app.use("/jquery",  express.static(__dirname + "../../node_modules/jquery/dist")) // redirect JS jquery
+app.use("/lib/css", express.static(__dirname + "../../node_modules/bootstrap/dist/css")) // redirect CSS bootstrap
+app.use("/lib/js",  express.static(__dirname + "../../node_modules/bootstrap/dist/js")) // redirect JS bootstrap
+app.use("/lib/jquery",  express.static(__dirname + "../../node_modules/jquery/dist")) // redirect JS jquery
 
 // Handling api
 app.use(express.json(), (error, req, res, next) => {

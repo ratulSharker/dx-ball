@@ -3,11 +3,13 @@
 
 <head>
     <title>DX-BALL</title>
-    <link rel='stylesheet' href='/css/bootstrap.min.css' />
-    <script type="text/javascript" src="/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="index.css">
-    <script type="text/javascript" src="index.js"></script>
+    <link rel='stylesheet' href='/lib/css/bootstrap.min.css' />
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+
+    <script type="text/javascript" src="js/api.js"></script>    
+    <script type="text/javascript" src="js/index.js"></script>
 </head>
 
 <body>
@@ -43,8 +45,20 @@
     <div id="play-grp" class="d-none">
         <div class="d-flex align-items-center flex-column centered button-group">
             <div class="p-2">
-                <button type="button" class="btn btn-outline-primary d-block">
+                <button type="button" class="btn btn-outline-success d-block" id="play-btn">
                     Play
+                </button>
+            </div>
+
+            <div class="p-2">
+                <button type="button" class="btn btn-outline-primary d-block" id="hall-of-fame">
+                    Hall of fame
+                </button>
+            </div>
+            
+            <div class="p-2">
+                <button type="button" class="btn btn-outline-danger d-block" id="logout-btn">
+                    Logout
                 </button>
             </div>
         </div>
@@ -64,19 +78,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="register-form">
+                        <div class="form-group">
+                            <label for="register-name" class="col-form-label">Name</label>
+                            <input type="text" class="form-control" id="register-name" name="name">
+                        </div>
                         <div class="form-group">
                             <label for="register-email" class="col-form-label">Email:</label>
-                            <input type="text" class="form-control" id="register-email">
+                            <input type="text" class="form-control" id="register-email" name="email">
                         </div>
                         <div class="form-group">
                             <label for="register-password" class="col-form-label">Password:</label>
-                            <input type="password" class="form-control" id="register-password">
+                            <input type="password" class="form-control" id="register-password" name="password">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Register</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="register-btn">Register</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -96,19 +114,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="login-form">
                         <div class="form-group">
                             <label for="login-email" class="col-form-label">Email:</label>
-                            <input type="text" class="form-control" id="login-email">
+                            <input type="text" class="form-control" id="login-email" name="email">
                         </div>
                         <div class="form-group">
                             <label for="login-password" class="col-form-label">Password:</label>
-                            <input type="password" class="form-control" id="login-password">
+                            <input type="password" class="form-control" id="login-password" name="password">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="login-btn">Login</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -127,24 +145,20 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="reset-password-form">
                         <div class="form-group">
                             <label for="forgot-email" class="col-form-label">Email:</label>
-                            <input type="text" class="form-control" id="forgot-email">
+                            <input type="text" class="form-control" id="forgot-email" name="email">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Reset Password</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="reset-password-btn">Reset Password</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
 
 </body>
 

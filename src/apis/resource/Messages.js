@@ -28,13 +28,12 @@ module.exports.Messages = {
 	passwordRequired: {
 		en : "Password required"
 	},
-	passwordMinLengthViolation : {
+	passwordMinLength : {
 		en : "Min length for password is 4"
 	},
 	passwordEmpty : {
 		en : "Password cannot be empty"
 	},
-
 
 	userAlreadyExistsWithGivenEmail : {
 		en : "User exists with given email"

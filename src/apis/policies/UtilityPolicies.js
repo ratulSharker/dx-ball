@@ -34,19 +34,15 @@ UtilityPolicies.joiPasswordValidationKey = joi.string().empty().min(4).required(
 	errors.forEach(error => {
 		switch (error.type) {
 		case "any.empty":
-			// TODO: write api test case
 			err.customMessage = Messages.passwordEmpty
 			return err
 		case "string.min":
-			// TODO: write api test case
 			err.customMessage = Messages.passwordMinLength
 			return err
 		case "any.required":
-			// TODO: write api test case
 			err.customMessage = Messages.passwordRequired
 			return err
 		default:
-			// TODO: write api test case
 			console.log("Unhandled case")
 			console.log(error)
 			err.customMessage = Messages.unhandledError
@@ -55,6 +51,29 @@ UtilityPolicies.joiPasswordValidationKey = joi.string().empty().min(4).required(
 	})
 	return err
 })
+
+UtilityPolicies.genericPositiveRequiredNumberKey = (requiredCustomErrMessage, invalidNumberErrMessage) => {
+	return joi.number().min(0).required().error(errors => {
+		const err = Error()
+		errors.forEach(error => {
+			switch (error.type) {
+			case "any.required":
+				err.customMessage = requiredCustomErrMessage
+				return err
+			case "number.base":
+			case "number.min":
+				err.customMessage = invalidNumberErrMessage
+				return err
+			default:
+				console.log("Unhandled case")
+				console.log(error)
+				err.customMessage = Messages.unhandledError
+				return err
+			}
+		})
+		return err
+	})
+}
 
 UtilityPolicies.genericNonEmptyRequiredStringKey = (emptyCustomErrMessage, requiredCustomErrMessage) => {
 	return joi.string().empty().required().error(errors => {

@@ -56,6 +56,29 @@ module.exports.Messages = {
 		en : "Password reset to 1234"
 	},
 
+	unAuthorizedUserOrInvalidRoute:  {
+		en : "Unauthorized user or invalid route"
+	},
+
+	unAuthorizedUser: {
+		en : "Unauthroized user"
+	},
+
+	scoreRequired: {
+		en : "Score required"
+	},
+
+	scoreInvalid: {
+		en : "Score invalid"
+	},
+
+	scoreUpdated: {
+		en : "Score updated"
+	},
+
+	scoreFeched: {
+		en : "Score fetched"
+	},
 
 	unhandledError : {
 		en : "Unhandled error"

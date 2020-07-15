@@ -2,7 +2,7 @@ const { Database } = require("../Database")
 const Sequelize = require("sequelize")
 const { UserModel } = require("./UserModel")
 
-const UserScoreModel = Database.define("user_highest_score", {
+const UserHighestScoreModel = Database.define("user_highest_score", {
 	userId: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
@@ -20,11 +20,11 @@ const UserScoreModel = Database.define("user_highest_score", {
 })
 
 
-UserScoreModel.belongsTo(UserModel, {
+UserHighestScoreModel.belongsTo(UserModel, {
 	foreignKey: {
 		name: "userId",
 		allowNull: false
 	}
 })
 
-module.exports.UserScoreModel = UserScoreModel
+module.exports.UserHighestScoreModel = UserHighestScoreModel

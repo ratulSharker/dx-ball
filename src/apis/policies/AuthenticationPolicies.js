@@ -3,6 +3,8 @@ const { UtilityPolicies } = require("./UtilityPolicies")
 const { JoiAppError, AppError } = require("../utility/AppError")
 const { UserController } = require("../controller/UserController")
 const { Messages } = require("../resource/Messages")
+const { Constants } = require("../../Constants")
+const jwt = require("jsonwebtoken")
 
 const AuthenticationPolicies = {
 
@@ -51,6 +53,26 @@ AuthenticationPolicies.doNotProceedIfUserNotFoundByEmail = async (email) => {
 }
 
 
+AuthenticationPolicies.verifyTokenSign = (token) => {
+	try {
+		const payload = jwt.verify(token, Constants.token.keys.public, {
+			algorithms: "RS256"
+		})
+
+		if(!payload) {
+			throw new AppError(Messages.unAuthorizedUser, 401, {
+
+			})
+		}
+		return payload
+	} catch (error) {
+		console.log(error)
+		throw new AppError(Messages.unAuthorizedUser, 401, {
+
+		})
+	}
+
+}
 
 
 module.exports.AuthenticationPolicies = AuthenticationPolicies

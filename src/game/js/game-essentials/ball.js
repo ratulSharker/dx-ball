@@ -3,8 +3,12 @@ function Ball() {
 	this.centerX = this.radius
 	this.centerY = this.radius
 
-	this.speedX = -10
-	this.speedY = -10
+
+	this.speed = 10
+
+	var initialAngle = (Math.PI / 4)
+	this.speedX = Math.cos(initialAngle) * this.speed
+	this.speedY = -Math.sin(initialAngle) * this.speed
 
 	this.maxSpeed = 10
 	this.minSpeed = 6
@@ -75,6 +79,22 @@ Ball.prototype.collisionWithBat = function (batX, batWidth, batTopY) {
 	var nextCenter = this.centerAfterNextMove()
 	var ballBottomY = nextCenter.centerY + this.radius
 	if(ballBottomY > batTopY && batX < nextCenter.centerX && nextCenter.centerX < batX + batWidth) {
+
+		//				   BAT
+		//	150 			90				30
+		//  Left 		  Middle			Right
+
+		var batRightMostRadian = 0.523599 // 30 Degree
+		var batLeftMostRadian = 2.61799 // 150 Degree
+
+		var angleDeviation = batLeftMostRadian - batRightMostRadian
+		var collisionDeviation = batX + batWidth - nextCenter.centerX
+
+		// Simple interpolation
+		var angleInRadian = batRightMostRadian + (collisionDeviation / batWidth) * angleDeviation
+		this.speedX = Math.cos(angleInRadian) * this.speed
+		this.speedY = Math.sin(angleInRadian) * this.speed
+
 		this.flipSpeedVertically()
 	}
 }

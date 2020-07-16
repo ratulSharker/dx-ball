@@ -1,8 +1,8 @@
 function Bat(windowWidth, windowHeight) {
 
-	this.widthPercentageOfWindow = 10
-	this.maxPercentage = 15
-	this.minPercentage = 5
+	this.widthPercentageOfWindow = 15
+	this.maxPercentage = 20
+	this.minPercentage = 10
 
 	this.windowWidth = windowWidth
 	this.windowHeight = windowHeight

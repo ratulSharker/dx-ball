@@ -1,4 +1,5 @@
 const { UserHighestScoreModel } = require("../model/UserHighestScoreModel")
+const { UserModel } = require("../model/UserModel")
 
 
 const UserHighestScoreController = {
@@ -34,6 +35,14 @@ UserHighestScoreController.topScores = (offset, limit) => {
 	return UserHighestScoreModel.findAll({
 		offset: offset,
 		limit: limit,
+		include: [
+			{
+				model: UserModel
+			}
+		],
+		attributes: {
+			exclude: ["userId"]
+		},
 		order: [
 			["score", "DESC"]
 		]

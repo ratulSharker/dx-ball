@@ -8,7 +8,7 @@
     <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/index.css">
 
-    <script type="text/javascript" src="js/api.js"></script>    
+    <script type="text/javascript" src="js/api.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 </head>
 
@@ -51,11 +51,12 @@
             </div>
 
             <div class="p-2">
-                <button type="button" class="btn btn-outline-primary d-block" id="hall-of-fame">
+                <button type="button" class="btn btn-outline-primary d-block" id="hall-of-fame" data-toggle="modal"
+                    data-target="#hallOfFameModal">
                     Hall of fame
                 </button>
             </div>
-            
+
             <div class="p-2">
                 <button type="button" class="btn btn-outline-danger d-block" id="logout-btn">
                     Logout
@@ -94,7 +95,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="register-btn">Register</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        id="register-btn">Register</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -133,6 +135,38 @@
         </div>
     </div>
 
+    <!-- Hall of fame dialog -->
+    <div class="modal fade" id="hallOfFameModal" tabindex="-1" role="dialog" aria-labelledby="hallOfFameModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hallOfFameModalLabel">Hall of fame</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Score</th>
+                                <th>Scored At</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hall-of-fame-tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- forgot password dialog -->
     <div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgotModalLabel"
         aria-hidden="true">
@@ -153,7 +187,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="reset-password-btn">Reset Password</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="reset-password-btn">Reset
+                        Password</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>

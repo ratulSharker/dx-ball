@@ -81,6 +81,11 @@ Game.prototype.draw = function () {
 	} else if(this.curState == this.state.no_more_life) {
 		// SHOW USER RUN OUT OF LIFE
 	} else {
+
+		this.drawLife()
+		this.drawScore()
+		this.drawStageName()
+
 		// NORMAL GAMEPLAY
 		this.operateBallBasedOnState()
 
@@ -154,4 +159,40 @@ Game.prototype.ballDroppedToBottom = function() {
 
 Game.prototype.on = function(event, callback) {
 	this.callbacks[event] = callback
+}
+
+Game.prototype.drawLife = function( ) {
+	var heartImage = document.getElementById("heart_image")
+
+	var margin = 10
+	var width = 40
+	var height = 40
+
+	var curX = this.windowWidth - margin - width
+
+	for(var index = 0; index < this.lifeCount; index++) {
+		this.ctx.drawImage(heartImage, curX, margin, width, height)
+		curX -= (margin + width)
+	}
+}
+
+Game.prototype.drawScore = function() {
+	var margin = 10
+
+	this.ctx.fillStyle = "#FFFFFF"
+	this.ctx.font = "30px Comic Sans MS"
+	this.ctx.textBaseline = "top"
+	this.ctx.textAlign = "left"
+	this.ctx.fillText(`Score : ${this.stage.score}`, margin, margin)
+}
+
+Game.prototype.drawStageName = function() {
+
+	var margin = 10
+
+	this.ctx.fillStyle = "#FFFFFF"
+	this.ctx.font = "30px Comic Sans MS"
+	this.ctx.textBaseline = "top"
+	this.ctx.textAlign = "center"
+	this.ctx.fillText(stageDatas[this.currentStage].name, this.windowWidth / 2, margin)
 }

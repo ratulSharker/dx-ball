@@ -1,0 +1,13 @@
+html, body {
+    width:  100%;
+    height: 100%;
+    margin: 0;
+    overflow-y: hidden;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -1,78 +1,66 @@
 /* global $ Api */
-$( document ).ready(function() {
+$(document).ready(function () {
+
+	// Initial setup
 	showHideRegisterPlay()
 	$("#login-btn").click(handleLogin)
 	$("#register-btn").click(handleRegister)
 	$("#reset-password-btn").click(handleResetPassword)
 	$("#play-btn").click(gameplayTapped)
 	$("#logout-btn").click(handleLogout)
-})
+	var api = new Api()
 
-
-function showHideRegisterPlay() {
-	var token = localStorage.getItem("token")
-	if(token) {
-		$("#register-grp").hide().removeClass("d-none")
-		$("#play-grp").show().removeClass("d-none")
-	} else {
-		$("#register-grp").show().removeClass("d-none")
-		$("#play-grp").hide().removeClass("d-none")
+	// Event handler
+	function handleRegister() {
+		api.register($("#register-form").serializeArray(),
+			function (res) {
+				localStorage.setItem("token", res.data.token)
+				showHideRegisterPlay()
+			},
+			function (errMsg) {
+				window.alert(errMsg)
+			})
 	}
-}
 
-function handleRegister() {
-	var registerData = Api.objectifyForm($("#register-form").serializeArray())
-	Api.jsonPostRequest(
-		"/api/v1/register",
-		registerData,
-		function(res) {
-			localStorage.setItem("token", res.data.token)
-			showHideRegisterPlay()
-		},
-		function (xhr) {
-			const errMsg = Api.getErrorMsg(xhr)
-			window.alert(errMsg)
+	function handleLogin() {
+		api.login($("#login-form").serializeArray(),
+			function (res) {
+				localStorage.setItem("token", res.data.token)
+				showHideRegisterPlay()
+			},
+			function (errMsg) {
+				window.alert(errMsg)
+			})
+	}
+
+	function handleResetPassword() {
+		api.resetPassword($("#reset-password-form").serializeArray(),
+			function (res) {
+				const msg = res.messages.en
+				window.alert(msg)
+			},
+			function (errMsg) {
+				window.alert(errMsg)
+			})
+	}
+
+	function showHideRegisterPlay() {
+		var token = localStorage.getItem("token")
+		if (token) {
+			$("#register-grp").hide().removeClass("d-none")
+			$("#play-grp").show().removeClass("d-none")
+		} else {
+			$("#register-grp").show().removeClass("d-none")
+			$("#play-grp").hide().removeClass("d-none")
 		}
-	)
-}
+	}
 
-function handleLogin() {
-	var loginData = Api.objectifyForm($("#login-form").serializeArray())
-	Api.jsonPostRequest(
-		"/api/v1/authentication/login",
-		loginData,
-		function(res) {
-			localStorage.setItem("token", res.data.token)
-			showHideRegisterPlay()
-		},
-		function(xhr) {
-			const errMsg = Api.getErrorMsg(xhr)
-			window.alert(errMsg)
-		}
-	)
-}
+	function gameplayTapped() {
+		window.location = "/gameplay.html"
+	}
 
-function handleResetPassword() {
-	var resetPasswordData = Api.objectifyForm($("#reset-password-form").serializeArray())
-	Api.jsonPostRequest(
-		"/api/v1/authentication/reset-password",
-		resetPasswordData,
-		function(res) {
-			const msg = res.messages.en
-			window.alert(msg)
-		},
-		function(xhr) {
-			const errMsg = Api.getErrorMsg(xhr)
-			window.alert(errMsg)
-		}
-	)
-}
-
-function gameplayTapped() {
-	window.location = "/gameplay.html"
-}
-
-function handleLogout() {
-	localStorage.removeItem("token")
-	showHideRegisterPlay()
-}
+	function handleLogout() {
+		localStorage.removeItem("token")
+		showHideRegisterPlay()
+	}
+})

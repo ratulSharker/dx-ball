@@ -1,12 +1,10 @@
 /* global $*/
-/* eslint-disable no-unused-vars */
 
-
-var Api = {
+function Api() {
 
 }
 
-Api.objectifyForm = function (formArray) {
+Api.prototype.objectifyForm = function (formArray) {
 
 	var returnObj = {
 	}
@@ -16,12 +14,12 @@ Api.objectifyForm = function (formArray) {
 	return returnObj
 }
 
-Api.getErrorMsg = function getErrorMsg(xhr) {
+Api.prototype.getErrorMsg = function getErrorMsg(xhr) {
 	const res = JSON.parse(xhr.responseText)
 	return res.messages.en
 }
 
-Api.jsonPostRequest = function (url, data, success, error) {
+Api.prototype.jsonPostRequest = function(url, data, success, error) {
 	$.post({
 		url: url,
 		data: JSON.stringify(data),
@@ -32,5 +30,44 @@ Api.jsonPostRequest = function (url, data, success, error) {
 	})
 }
 
-/* eslint-enable no-unused-vars */
+Api.prototype.register = function(serializedArrayData, successCallback, errorCallback) {
+	var registerData = this.objectifyForm(serializedArrayData)
+	var self = this
+	this.jsonPostRequest(
+		"/api/v1/register",
+		registerData,
+		successCallback,
+		function (xhr) {
+			const errMsg = self.getErrorMsg(xhr)
+			errorCallback(errMsg)
+		}
+	)
+}
 
+Api.prototype.login = function(serializedArrayData, successCallback, errorCallback) {
+	var loginData = this.objectifyForm(serializedArrayData)
+	var self = this
+	this.jsonPostRequest(
+		"/api/v1/authentication/login",
+		loginData,
+		successCallback,
+		function(xhr) {
+			const errMsg = self.getErrorMsg(xhr)
+			errorCallback(errMsg)
+		}
+	)
+}
+
+Api.prototype.resetPassword = function(serializedArrayData, successCallback, errorCallback) {
+	var resetPasswordData = this.objectifyForm(serializedArrayData)
+	var self = this
+	this.jsonPostRequest(
+		"/api/v1/authentication/reset-password",
+		resetPasswordData,
+		successCallback,
+		function(xhr) {
+			const errMsg = self.getErrorMsg(xhr)
+			errorCallback(errMsg)
+		}
+	)
+}

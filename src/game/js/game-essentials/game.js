@@ -135,7 +135,7 @@ Game.prototype.moveToNextStage = function () {
 	} else {
 		this.curState = this.state.no_more_stages
 		if(this.callbacks["all_stage_finished"]) {
-			this.callbacks["all_stage_finished"]()
+			this.callbacks["all_stage_finished"](this.stage.score)
 		}
 	}
 }
@@ -147,7 +147,7 @@ Game.prototype.ballDroppedToBottom = function() {
 	if(this.lifeCount == 0) {
 		this.curState = this.state.no_more_life
 		if(this.callbacks["no_more_life"]) {
-			this.callbacks["no_more_life"]()
+			this.callbacks["no_more_life"](this.stage.score)
 		}
 	}
 }

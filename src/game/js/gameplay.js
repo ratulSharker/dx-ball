@@ -36,14 +36,14 @@ $(document).ready(function () {
 		session.game.startGame()
 	})
 
-	session.game.on("all_stage_finished", function() {
+	session.game.on("all_stage_finished", function(score) {
 		clearInterval(session.intervalId)
-		window.alert("all stage finished")
+		window.alert("all stage finished " + score)
 	})
 
-	session.game.on("no_more_life", function () {
+	session.game.on("no_more_life", function (score) {
 		clearInterval(session.intervalId)
-		window.alert("No more life left")
+		window.alert("No more life left " + score)
 	})
 })
 

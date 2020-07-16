@@ -12,6 +12,8 @@ function Stage(windowWidth, windowHeight, stageData) {
 	this.callbacks = {
 
 	}
+
+	this.score = 0
 }
 
 Stage.prototype.windowResized = function (windowWidth, windowHeight) {
@@ -54,6 +56,7 @@ Stage.prototype.brickCollisionResult = function (ball) {
 
 			if (collide) {
 				// decrease brick value by one
+				self.score++
 				self.stageData.data[row][col] = brickValue - 1
 				collideResult = collide
 				return true

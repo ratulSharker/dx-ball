@@ -4,6 +4,7 @@ $( document ).ready(function() {
 	$("#login-btn").click(handleLogin)
 	$("#register-btn").click(handleRegister)
 	$("#reset-password-btn").click(handleResetPassword)
+	$("#play-btn").click(gameplayTapped)
 	$("#logout-btn").click(handleLogout)
 })
 
@@ -65,6 +66,10 @@ function handleResetPassword() {
 			window.alert(errMsg)
 		}
 	)
+}
+
+function gameplayTapped() {
+	window.location = "/gameplay.html"
 }
 
 function handleLogout() {

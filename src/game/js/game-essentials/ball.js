@@ -1,5 +1,5 @@
 function Ball() {
-	this.radius = 10
+	this.radius = 13
 	this.centerX = this.radius
 	this.centerY = this.radius
 
@@ -55,6 +55,19 @@ Ball.prototype.handleCollisionWithWindowReportBottomCollision = function(wWidth,
 	}
 
 	return false
+}
+
+Ball.prototype.handleBrickCollisionResult = function (brickCollisionResult) {
+	if(brickCollisionResult) {
+		if(brickCollisionResult == "top" || brickCollisionResult == "bottom") {
+			this.flipSpeedVertically()
+		} else if(brickCollisionResult == "left" || brickCollisionResult == "right") {
+			this.flipSpeedHorizontally()
+		} else {
+			// it's the corner
+			this.flipSpeedHorizontally()
+		}
+	}
 }
 
 Ball.prototype.collisionWithBat = function (batX, batWidth, batTopY) {

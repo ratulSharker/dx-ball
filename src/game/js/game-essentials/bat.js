@@ -9,7 +9,7 @@ function Bat(windowWidth, windowHeight) {
 
 	this.margin = 5
 
-	var height = 40
+	var height = 20
 
 	this.rect = {
 		x : this.margin,

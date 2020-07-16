@@ -34,7 +34,7 @@ Stage.prototype.draw = function (ctx) {
 
 // It will return next ball hit direction
 // "top", "bottom", "left", "right", "top-left", "top-right", "bottom-left", "bottom-right"
-Stage.prototype.handleBallCollisionWithBrick = function (ball) {
+Stage.prototype.brickCollisionResult = function (ball) {
 
 	// ball is within stage rectangle, now check for each brick to have collision with ball or not
 	var self = this

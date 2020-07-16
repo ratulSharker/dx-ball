@@ -100,17 +100,8 @@ Game.prototype.operateBallBasedOnState = function () {
 			this.balls[index].collisionWithBat(this.bat.rect.x, this.bat.rect.width, this.bat.rect.y)
 
 			// stage collision
-			const brickCollisionSide = this.stage.handleBallCollisionWithBrick(this.balls[index])
-			if(brickCollisionSide) {
-				if(brickCollisionSide == "top" || brickCollisionSide == "bottom") {
-					this.balls[index].flipSpeedVertically()
-				} else if(brickCollisionSide == "left" || brickCollisionSide == "right") {
-					this.balls[index].flipSpeedHorizontally()
-				} else {
-					// it's the corner
-					this.balls[index].flipSpeedHorizontally()
-				}
-			}
+			const brickCollisionResult = this.stage.brickCollisionResult(this.balls[index])
+			this.balls[index].handleBrickCollisionResult(brickCollisionResult)
 
 			// move ball
 			this.balls[index].move()

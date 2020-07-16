@@ -4,3 +4,10 @@ html, body {
     margin: 0;
     overflow-y: hidden;
 }
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

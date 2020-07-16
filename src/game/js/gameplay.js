@@ -32,18 +32,25 @@ $(document).ready(function () {
 	})
 
 	$("#canvas").mouseup(function() {
-		console.log("game started")
 		session.game.startGame()
+	})
+
+	$("#main_menu_btn").click(function() {
+		window.location = "/index.html"
 	})
 
 	session.game.on("all_stage_finished", function(score) {
 		clearInterval(session.intervalId)
-		window.alert("all stage finished " + score)
+		session.game.draw()
+		console.log(score)
+		$("#main_menu_btn").show().removeClass("d-none")
 	})
 
 	session.game.on("no_more_life", function (score) {
 		clearInterval(session.intervalId)
-		window.alert("No more life left " + score)
+		session.game.draw()
+		console.log(score)
+		$("#main_menu_btn").show().removeClass("d-none")
 	})
 })
 

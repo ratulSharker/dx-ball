@@ -76,10 +76,10 @@ Game.prototype.draw = function () {
 	// clear screen
 	this.ctx.clearRect(0, 0, this.windowWidth, this.windowHeight)
 
-	if(this.curState == this.state.no_more_stages) {
-		// SHOW FINISHED ALL STAGES
-	} else if(this.curState == this.state.no_more_life) {
-		// SHOW USER RUN OUT OF LIFE
+	if(this.curState == this.state.no_more_stages || this.curState == this.state.no_more_life) {
+		this.drawGameOver()
+		this.drawScore()
+		this.drawStageName()
 	} else {
 
 		this.drawLife()
@@ -195,4 +195,23 @@ Game.prototype.drawStageName = function() {
 	this.ctx.textBaseline = "top"
 	this.ctx.textAlign = "center"
 	this.ctx.fillText(stageDatas[this.currentStage].name, this.windowWidth / 2, margin)
+}
+
+Game.prototype.drawGameOver = function() {
+	var gameOverImage = document.getElementById("game_over_image")
+
+	var imageX = (this.windowWidth - gameOverImage.width) / 2
+
+	this.ctx.drawImage(gameOverImage, imageX, 50)
+
+	// var margin = 10
+	// var width = 40
+	// var height = 40
+
+	// var curX = this.windowWidth - margin - width
+
+	// for(var index = 0; index < this.lifeCount; index++) {
+	// 	this.ctx.drawImage(heartImage, curX, margin, width, height)
+	// 	curX -= (margin + width)
+	// }
 }

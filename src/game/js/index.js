@@ -7,6 +7,7 @@ $(document).ready(function () {
 	$("#register-btn").click(handleRegister)
 	$("#reset-password-btn").click(handleResetPassword)
 	$("#play-btn").click(gameplayTapped)
+	$("#hall-of-fame").click(hallOfFameTapped)
 	$("#logout-btn").click(handleLogout)
 	var api = new Api()
 
@@ -57,6 +58,31 @@ $(document).ready(function () {
 
 	function gameplayTapped() {
 		window.location = "/gameplay.html"
+	}
+
+	function hallOfFameTapped() {
+		var token = localStorage.getItem("token")
+		api.getTopScores(token,
+			function (res) {
+				console.log(res.data.topScores)
+
+				var tbody = $("#hall-of-fame-tbody")
+				tbody.empty()
+
+				for(var index = 0; index < res.data.topScores.length; index++) {
+					var tr = $("<tr>")
+
+					$("<td>").html(res.data.topScores[index].user.name).appendTo(tr)
+					$("<td>").html(res.data.topScores[index].score).appendTo(tr)
+					$("<td>").html(new Date(res.data.topScores[index].createdAt).toLocaleString()).appendTo(tr)
+
+					tbody.append(tr)
+				}
+
+			},
+			function (errMsg) {
+				window.alert(errMsg)
+			})
 	}
 
 	function handleLogout() {

@@ -11,10 +11,17 @@ function Game(windowWidth, windowHeight, canvas) {
 
 	this.state = {
 		waiting: "WAITING",
-		running: "RUNNING"
+		running: "RUNNING",
+		no_more_life: "NO_MORE_LIFE",
+		no_more_stages: "NO_MORE_STAGES"
 	}
 	this.curState = this.state.waiting
 
+	this.callbacks = {
+
+	}
+
+	this.lifeCount = 3
 
 	// bat setup
 	this.bat = new Bat(windowWidth, windowHeight)
@@ -27,6 +34,10 @@ function Game(windowWidth, windowHeight, canvas) {
 	// stage setup
 	this.currentStage = 0
 	this.stage = new Stage(windowWidth, windowHeight, stageDatas[this.currentStage])
+	var self = this
+	this.stage.on("end", function() {
+		self.moveToNextStage()
+	})
 }
 
 Game.prototype.windowResized = function (windowWidth, windowHeight) {
@@ -62,20 +73,27 @@ Game.prototype.startGame = function () {
 
 Game.prototype.draw = function () {
 
-	this.operateBallBasedOnState()
-
 	// clear screen
 	this.ctx.clearRect(0, 0, this.windowWidth, this.windowHeight)
 
-	// ball drawing
-	this.bat.draw(this.ctx)
+	if(this.curState == this.state.no_more_stages) {
+		// SHOW FINISHED ALL STAGES
+	} else if(this.curState == this.state.no_more_life) {
+		// SHOW USER RUN OUT OF LIFE
+	} else {
+		// NORMAL GAMEPLAY
+		this.operateBallBasedOnState()
 
-	// stage drawing
-	this.stage.draw(this.ctx)
+		// ball drawing
+		this.bat.draw(this.ctx)
 
-	// ball drawing
-	for (var index = 0; index < this.balls.length; index++) {
-		this.balls[index].draw(this.ctx)
+		// stage drawing
+		this.stage.draw(this.ctx)
+
+		// ball drawing
+		for (var index = 0; index < this.balls.length; index++) {
+			this.balls[index].draw(this.ctx)
+		}
 	}
 }
 
@@ -93,7 +111,7 @@ Game.prototype.operateBallBasedOnState = function () {
 			// window collision
 			var bottomCollided = this.balls[index].handleCollisionWithWindowReportBottomCollision(this.windowWidth, this.windowHeight)
 			if(bottomCollided) {
-				this.curState = this.state.waiting
+				this.ballDroppedToBottom()
 			}
 
 			// bat collision
@@ -107,4 +125,33 @@ Game.prototype.operateBallBasedOnState = function () {
 			this.balls[index].move()
 		}
 	}
+}
+
+Game.prototype.moveToNextStage = function () {
+	if(this.currentStage < stageDatas.length - 1) {
+		this.currentStage++
+		this.curState = this.state.waiting
+		this.stage.setNewStageData(stageDatas[this.currentStage])
+	} else {
+		this.curState = this.state.no_more_stages
+		if(this.callbacks["all_stage_finished"]) {
+			this.callbacks["all_stage_finished"]()
+		}
+	}
+}
+
+Game.prototype.ballDroppedToBottom = function() {
+	this.curState = this.state.waiting
+	this.lifeCount--
+
+	if(this.lifeCount == 0) {
+		this.curState = this.state.no_more_life
+		if(this.callbacks["no_more_life"]) {
+			this.callbacks["no_more_life"]()
+		}
+	}
+}
+
+Game.prototype.on = function(event, callback) {
+	this.callbacks[event] = callback
 }

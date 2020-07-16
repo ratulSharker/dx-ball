@@ -22,14 +22,18 @@ Stage.prototype.windowResized = function (windowWidth, windowHeight) {
 Stage.prototype.draw = function (ctx) {
 
 	const self = this
+	var brickCount = 0
 	this.traverseBricks(function (brickValue, x, y, width, height) {
 		if (brickValue > 0) {
+			brickCount++
 			ctx.fillStyle = self.stageData.colorByType[brickValue]
 			ctx.fillRect(x, y, width, height)
 		}
 	})
 
-
+	if(brickCount == 0 && this.callbacks["end"]) {
+		this.callbacks["end"]()
+	}
 }
 
 // It will return next ball hit direction
@@ -60,7 +64,6 @@ Stage.prototype.brickCollisionResult = function (ball) {
 	return collideResult
 }
 
-
 Stage.prototype.traverseBricks = function (callback) {
 	const availableWidth = this.windowWidth - this.margin.left - this.margin.right
 	const brickWidth = (availableWidth / this.stageData.col) - this.stageData.gap.horizontal
@@ -82,6 +85,10 @@ Stage.prototype.traverseBricks = function (callback) {
 		curX = this.margin.left
 		curY += this.stageData.brickHeight + this.stageData.gap.vertical
 	}
+}
+
+Stage.prototype.setNewStageData = function(stageData) {
+	this.stageData = stageData
 }
 
 Stage.prototype.on = function (event, callback) {

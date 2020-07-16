@@ -35,6 +35,16 @@ $(document).ready(function () {
 		console.log("game started")
 		session.game.startGame()
 	})
+
+	session.game.on("all_stage_finished", function() {
+		clearInterval(session.intervalId)
+		window.alert("all stage finished")
+	})
+
+	session.game.on("no_more_life", function () {
+		clearInterval(session.intervalId)
+		window.alert("No more life left")
+	})
 })
 
 // Helper

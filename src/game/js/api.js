@@ -71,3 +71,24 @@ Api.prototype.resetPassword = function(serializedArrayData, successCallback, err
 		}
 	)
 }
+
+Api.prototype.updateScore = function(score, token, successCallback, errorCallback) {
+	var self = this
+	$.ajax({
+		type: "put",
+		url: "api/v1/users/me/highest-score",
+		data: JSON.stringify({
+			score: score
+		}),
+		contentType : "application/json; charset=utf-8",
+		headers: {
+			"Authorization" : token,
+		},
+		dataType: "json",
+		success: successCallback,
+		error: function (xhr) {
+			var errMsg = self.getErrorMsg(xhr)
+			errorCallback(errMsg)
+		}
+	})
+}

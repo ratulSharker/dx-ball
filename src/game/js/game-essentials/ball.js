@@ -3,8 +3,8 @@ function Ball() {
 	this.centerX = this.radius
 	this.centerY = this.radius
 
-	this.speedX = -12
-	this.speedY = -12
+	this.speedX = -10
+	this.speedY = -10
 
 	this.maxSpeed = 10
 	this.minSpeed = 6
@@ -96,4 +96,75 @@ Ball.prototype.draw = function (ctx) {
 	)
 	ctx.closePath()
 	ctx.fill()
+}
+
+// returns hit direction `top`, `bottom`, `left`, `right`, "top-left", "top-right", "bottom-left", "bottom-right"
+Ball.prototype.hitDirection = function (rect) {
+
+	const nextCenter = this.centerAfterNextMove()
+
+	const ballLeftX = nextCenter.centerX - this.radius
+	const ballRightX = nextCenter.centerX + this.radius
+	const ballTopY = nextCenter.centerY - this.radius
+	const ballBottomY = nextCenter.centerY + this.radius
+
+	const rectLeftX = rect.x
+	const rectRightX = rect.x + rect.width
+	const rectTopY = rect.y
+	const rectBottomY = rect.y + rect.height
+
+	// top hit
+	if (ballBottomY >= rectTopY && ballBottomY <= rectBottomY && ballLeftX >= rectLeftX && ballRightX <= rectRightX) {
+		return "top"
+	}
+
+	// bottom hit
+	if (ballTopY >= rectTopY && ballTopY <= rectBottomY && ballLeftX >= rectLeftX && ballRightX <= rectRightX) {
+		return "bottom"
+	}
+
+	// left hit
+	if(ballRightX >= rectLeftX && ballRightX < rectRightX && ballTopY >= rectTopY && ballBottomY <= rectBottomY) {
+		return "left"
+	}
+
+	// right hit
+	if(ballLeftX >= rectLeftX && ballLeftX < rectRightX && ballTopY >= rectTopY && ballBottomY <= rectBottomY) {
+		return "right"
+	}
+
+	// top-left
+	if(this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectLeftX, rectTopY)) {
+		return "top-left"
+	}
+
+	// top-right
+	if(this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectRightX, rectTopY)) {
+		return "top-right"
+	}
+
+	// bottom-left
+	if(this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectLeftX, rectBottomY)) {
+		return "bottom-left"
+	}
+
+	// bottom-right
+	if(this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectRightX, rectBottomY)) {
+		return "bottom-right"
+	}
+
+	return undefined
+}
+
+Ball.prototype.isInsideCircle = function (centerX, centerY, radius, pX, pY) {
+	const distance = this.distance(centerX, centerY, pX, pY)
+
+	return distance <= radius
+}
+
+Ball.prototype.distance = function (aX, aY, bX, bY) {
+	const dx = aX - bX
+	const dy = aY - bY
+
+	return Math.sqrt(dx * dx + dy * dy)
 }

@@ -62,7 +62,7 @@ Bat.prototype.repositionBat = function() {
 }
 
 Bat.prototype.draw = function(ctx) {
-	ctx.fillStyle = "#0000FF"
+	ctx.fillStyle = "#b89ae4"
 
 	ctx.fillRect(
 		this.rect.x,

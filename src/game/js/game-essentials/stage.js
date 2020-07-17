@@ -1,6 +1,6 @@
 function Stage(windowWidth, windowHeight, stageData) {
 	this.margin = {
-		top: 50,
+		top: 55,
 		left: 10,
 		right: 10,
 		bottom: 0

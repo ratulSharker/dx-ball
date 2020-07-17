@@ -182,7 +182,7 @@ Ball.prototype.windowResized = function (wWidth, wHeight) {
 }
 
 Ball.prototype.draw = function (ctx) {
-	ctx.fillStyle = "#00FF00"
+	ctx.fillStyle = "#FFA500"
 	ctx.beginPath()
 	ctx.arc(
 		this.centerX,

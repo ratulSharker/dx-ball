@@ -7,7 +7,7 @@
 // `3` represent it will take three hit to diminish (colored RED)
 var stageDatas = [
 	{
-		name : "Java (1)",
+		name : "Java (Stage 1)",
 		col: 15,
 		row: 8,
 		gap: {
@@ -32,7 +32,7 @@ var stageDatas = [
 		]
 	},
 	{
-		name: "C++ (2)",
+		name: "C++ (Stage 2)",
 		col: 10,
 		row: 9,
 		gap: {

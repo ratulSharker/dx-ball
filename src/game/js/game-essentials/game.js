@@ -1,4 +1,4 @@
-/* global Bat Ball stageDatas Stage Power roundRobinPowerProvider getPowerTypes Timer*/
+/* global Bat Ball stageDatas Stage Power Timer*/
 
 function Game(windowWidth, windowHeight, canvas) {
 	this.windowWidth = windowWidth
@@ -17,6 +17,17 @@ function Game(windowWidth, windowHeight, canvas) {
 	}
 	this.curState = this.state.waiting
 
+	this.powerTypes = {
+		increaseLife: 1,
+		decreaseLife: 2,
+		increaseBatSize: 3,
+		decreaseBatSize: 4,
+		increaseBallSize: 5,
+		decreaseBallSize: 6,
+		speedUpBall: 7,
+		slowDownBall: 8
+	}
+
 	this.callbacks = {
 
 	}
@@ -33,7 +44,7 @@ function Game(windowWidth, windowHeight, canvas) {
 
 	// power setup
 	this.currentPower = undefined
-	this.powerProvider = roundRobinPowerProvider()
+	this.powerProvider = this.roundRobinPowerProvider()
 
 	// stage setup
 	this.currentStage = 0
@@ -84,12 +95,12 @@ Game.prototype.startGame = function () {
 	this.curState = this.state.running
 }
 
-Game.prototype.operateBallBasedOnState = function () {
+Game.prototype.operateBall = function () {
 	if (this.curState == this.state.waiting) {
 		// Ball will stick to the bat
 		var batTopCenter = this.bat.centerTop()
 		for (var index = 0; index < this.balls.length; index++) {
-			this.balls[index].stickBottom(batTopCenter.x, batTopCenter.y)
+			this.balls[index].stickBottomToPoint(batTopCenter.x, batTopCenter.y)
 		}
 	} else {
 		// Ball will be moving in each frame
@@ -102,10 +113,10 @@ Game.prototype.operateBallBasedOnState = function () {
 			}
 
 			// bat collision
-			this.balls[index].collisionWithBat(this.bat.rect.x, this.bat.rect.width, this.bat.rect.y)
+			this.balls[index].handleCollisionWithBat(this.bat.rect.x, this.bat.rect.width, this.bat.rect.y)
 
 			// stage collision
-			const brickCollisionResult = this.stage.brickCollisionResult(this.balls[index])
+			const brickCollisionResult = this.stage.handleBrickCollisionWithBallAndReportCollision(this.balls[index])
 			if (brickCollisionResult) {
 				this.handlePowerGeneration(this.balls[index])
 			}
@@ -117,12 +128,12 @@ Game.prototype.operateBallBasedOnState = function () {
 	}
 }
 
-Game.prototype.operatePowerBasedOnState = function () {
+Game.prototype.operatePower = function () {
 	if (this.curState == this.state.running && this.currentPower) {
 
-		var doesCollideWithBat = this.currentPower.reportBatCollision(this.bat.rect.x, this.bat.rect.width, this.bat.rect.y)
+		var collide = this.currentPower.doesCollideWithBat(this.bat.rect.x, this.bat.rect.width, this.bat.rect.y)
 
-		if (doesCollideWithBat) {
+		if (collide) {
 			// Apply the power
 			// Remove the power
 			this.applyPower(this.currentPower.powerType)
@@ -140,43 +151,42 @@ Game.prototype.operatePowerBasedOnState = function () {
 }
 
 Game.prototype.applyPower = function (powerType) {
-	var powers = getPowerTypes()
 	switch (powerType) {
-	case powers.increaseLife: {
+	case this.powerTypes.increaseLife: {
 		this.increaseLife()
 	}
 		break
-	case powers.decreaseLife: {
+	case this.powerTypes.decreaseLife: {
 		this.decreaseLife()
 	}
 		break
-	case powers.increaseBatSize: {
+	case this.powerTypes.increaseBatSize: {
 		this.bat.increaseSize()
 	}
 		break
-	case powers.decreaseBatSize: {
+	case this.powerTypes.decreaseBatSize: {
 		this.bat.decreaseSize()
 	}
 		break
-	case powers.increaseBallSize: {
+	case this.powerTypes.increaseBallSize: {
 		for(let index = 0; index < this.balls.length; index++) {
 			this.balls[index].increaseSize()
 		}
 	}
 		break
-	case powers.decreaseBallSize: {
+	case this.powerTypes.decreaseBallSize: {
 		for(let index = 0; index < this.balls.length; index++) {
 			this.balls[index].decreaseSize()
 		}
 	}
 		break
-	case powers.speedUpBall: {
+	case this.powerTypes.speedUpBall: {
 		for(let index = 0; index < this.balls.length; index++) {
 			this.balls[index].increaseSpeed()
 		}
 	}
 		break
-	case powers.slowDownBall: {
+	case this.powerTypes.slowDownBall: {
 		for(let index = 0; index < this.balls.length; index++) {
 			this.balls[index].decreaseSpeed()
 		}
@@ -218,6 +228,21 @@ Game.prototype.startLastBrickTimer = function () {
 		self.lastBrickTimer = undefined
 		self.moveToNextStage()
 	})
+}
+
+Game.prototype.roundRobinPowerProvider = function() {
+	var nextPower = this.powerTypes.increaseLife
+	var totalPowerCount = Object.keys(this.powerTypes).length
+
+	return function() {
+		var curPowerToReturn = nextPower
+		nextPower = (nextPower + 1)
+		if(nextPower > totalPowerCount) {
+			nextPower = 1
+		}
+		return curPowerToReturn
+	}
+
 }
 
 // Give appropriate name
@@ -267,10 +292,10 @@ Game.prototype.draw = function () {
 		this.drawStageName()
 
 		// Ball movement, collision reporting and handling
-		this.operateBallBasedOnState()
+		this.operateBall()
 
 		// Power movement, collision reporting and handling
-		this.operatePowerBasedOnState()
+		this.operatePower()
 
 
 		// ball drawing

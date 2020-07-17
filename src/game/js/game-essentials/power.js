@@ -114,7 +114,7 @@ Power.prototype.reportBatCollision = function (batX, batWidth, batTopY) {
 
 	var nextOrigin = this.nextOrigin()
 	var powerBottomY = nextOrigin.y + this.rect.height
-	if(powerBottomY > batTopY && batX < nextOrigin.x && nextOrigin.y < batX + batWidth) {
+	if(powerBottomY > batTopY && batX < nextOrigin.x && nextOrigin.x < batX + batWidth) {
 		return true
 	}
 

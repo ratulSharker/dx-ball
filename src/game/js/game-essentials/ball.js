@@ -1,19 +1,55 @@
 function Ball() {
-	this.radius = 13
+
+	this.radius = 14
+	this.minRadius = 9
+	this.maxRadius = 20
+
 	this.centerX = this.radius
 	this.centerY = this.radius
 
 
 	this.speed = 10
 
-	var initialAngle = (Math.PI / 4)
-	this.speedX = Math.cos(initialAngle) * this.speed
-	this.speedY = -Math.sin(initialAngle) * this.speed
+	this.angle = (Math.PI / 4)
+	this.speedX = Math.cos(this.angle) * this.speed
+	this.speedY = -Math.sin(this.angle) * this.speed
 
-	this.maxSpeed = 10
+	this.maxSpeed = 18
 	this.minSpeed = 6
 }
 
+Ball.prototype.increaseSize = function () {
+	if (this.radius < this.maxRadius) {
+		this.radius += 2
+	}
+}
+
+Ball.prototype.decreaseSize = function () {
+	if (this.radius > this.minRadius) {
+		this.radius -= 2
+	}
+}
+
+Ball.prototype.increaseSpeed = function () {
+	if (this.speed < this.maxSpeed) {
+		this.speed += 2
+		this.adjustNewSpeed()
+	}
+}
+
+Ball.prototype.decreaseSpeed = function( ) {
+	if(this.speed > this.minSpeed) {
+		this.speed -= 2
+		this.adjustNewSpeed()
+	}
+}
+
+
+Ball.prototype.adjustNewSpeed = function () {
+
+	this.speedX = Math.cos(this.angle) * this.speed * (this.speedX > 0 ? 1 : -1)
+	this.speedY = Math.sin(this.angle) * this.speed * (this.speedY > 0 ? 1 : -1)
+}
 
 Ball.prototype.move = function () {
 	this.centerX += this.speedX
@@ -40,21 +76,21 @@ Ball.prototype.stickBottom = function (posX, posY) {
 	this.centerY = posY - this.radius
 }
 
-Ball.prototype.handleCollisionWithWindowReportBottomCollision = function(wWidth, wHeight) {
+Ball.prototype.handleCollisionWithWindowReportBottomCollision = function (wWidth, wHeight) {
 	var nextCenter = this.centerAfterNextMove()
 
-	// I can look optimized using one if, but this is more cleaner
-	if(nextCenter.centerX - this.radius < 0) {
+	// It can look optimized using one if, but this is more cleaner
+	if (nextCenter.centerX - this.radius < 0) {
 		this.flipSpeedHorizontally()
-	} else if(nextCenter.centerX + this.radius > wWidth) {
+	} else if (nextCenter.centerX + this.radius > wWidth) {
 		this.flipSpeedHorizontally()
 	}
 
-	// I can look optimized using one if, but this is more cleaner
-	if(nextCenter.centerY - this.radius < 0) {
+	// It can look optimized using one if, but this is more cleaner
+	if (nextCenter.centerY - this.radius < 0) {
 		this.flipSpeedVertically()
-	} else if(nextCenter.centerY + this.radius > wHeight) {
-		this.flipSpeedVertically()
+	} else if (nextCenter.centerY + this.radius > wHeight) {
+		// this.flipSpeedVertically()
 		return true
 	}
 
@@ -62,10 +98,10 @@ Ball.prototype.handleCollisionWithWindowReportBottomCollision = function(wWidth,
 }
 
 Ball.prototype.handleBrickCollisionResult = function (brickCollisionResult) {
-	if(brickCollisionResult) {
-		if(brickCollisionResult == "top" || brickCollisionResult == "bottom") {
+	if (brickCollisionResult) {
+		if (brickCollisionResult == "top" || brickCollisionResult == "bottom") {
 			this.flipSpeedVertically()
-		} else if(brickCollisionResult == "left" || brickCollisionResult == "right") {
+		} else if (brickCollisionResult == "left" || brickCollisionResult == "right") {
 			this.flipSpeedHorizontally()
 		} else {
 			// it's the corner
@@ -78,7 +114,7 @@ Ball.prototype.collisionWithBat = function (batX, batWidth, batTopY) {
 
 	var nextCenter = this.centerAfterNextMove()
 	var ballBottomY = nextCenter.centerY + this.radius
-	if(ballBottomY > batTopY && batX < nextCenter.centerX && nextCenter.centerX < batX + batWidth) {
+	if (ballBottomY > batTopY && batX < nextCenter.centerX && nextCenter.centerX < batX + batWidth) {
 
 		//				   BAT
 		//	150 			90				30
@@ -91,28 +127,28 @@ Ball.prototype.collisionWithBat = function (batX, batWidth, batTopY) {
 		var collisionDeviation = batX + batWidth - nextCenter.centerX
 
 		// Simple interpolation
-		var angleInRadian = batRightMostRadian + (collisionDeviation / batWidth) * angleDeviation
-		this.speedX = Math.cos(angleInRadian) * this.speed
-		this.speedY = Math.sin(angleInRadian) * this.speed
+		this.angle = batRightMostRadian + (collisionDeviation / batWidth) * angleDeviation
+		this.speedX = Math.cos(this.angle) * this.speed
+		this.speedY = Math.sin(this.angle) * this.speed
 
 		this.flipSpeedVertically()
 	}
 }
 
 Ball.prototype.windowResized = function (wWidth, wHeight) {
-	if(this.centerX - this.radius < 0) {
+	if (this.centerX - this.radius < 0) {
 		this.centerX = this.radius
 	}
 
-	if(this.centerX + this.radius > wWidth) {
+	if (this.centerX + this.radius > wWidth) {
 		this.centerX = wWidth - this.radius
 	}
 
-	if(this.centerY - this.radius < 0) {
+	if (this.centerY - this.radius < 0) {
 		this.centerY = this.radius
 	}
 
-	if(this.centerY + this.radius > wHeight) {
+	if (this.centerY + this.radius > wHeight) {
 		this.centerY = wHeight - this.radius
 	}
 }
@@ -157,32 +193,32 @@ Ball.prototype.hitDirection = function (rect) {
 	}
 
 	// left hit
-	if(ballRightX >= rectLeftX && ballRightX < rectRightX && ballTopY >= rectTopY && ballBottomY <= rectBottomY) {
+	if (ballRightX >= rectLeftX && ballRightX < rectRightX && ballTopY >= rectTopY && ballBottomY <= rectBottomY) {
 		return "left"
 	}
 
 	// right hit
-	if(ballLeftX >= rectLeftX && ballLeftX < rectRightX && ballTopY >= rectTopY && ballBottomY <= rectBottomY) {
+	if (ballLeftX >= rectLeftX && ballLeftX < rectRightX && ballTopY >= rectTopY && ballBottomY <= rectBottomY) {
 		return "right"
 	}
 
 	// top-left
-	if(this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectLeftX, rectTopY)) {
+	if (this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectLeftX, rectTopY)) {
 		return "top-left"
 	}
 
 	// top-right
-	if(this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectRightX, rectTopY)) {
+	if (this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectRightX, rectTopY)) {
 		return "top-right"
 	}
 
 	// bottom-left
-	if(this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectLeftX, rectBottomY)) {
+	if (this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectLeftX, rectBottomY)) {
 		return "bottom-left"
 	}
 
 	// bottom-right
-	if(this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectRightX, rectBottomY)) {
+	if (this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectRightX, rectBottomY)) {
 		return "bottom-right"
 	}
 

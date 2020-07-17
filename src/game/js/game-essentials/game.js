@@ -234,7 +234,6 @@ Game.prototype.draw = function () {
 		this.drawScore()
 		this.drawStageName()
 	} else {
-
 		this.drawLife()
 		this.drawScore()
 		this.drawStageName()

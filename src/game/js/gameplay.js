@@ -33,17 +33,27 @@ $(document).ready(function () {
 	})
 
 	game.on("all_stage_finished", function (score) {
-		clearInterval(intervalId)
-		game.draw()
-		updateScore(score)
-		$("#main_menu_btn").show().removeClass("d-none")
+		setTimeout(function () {
+			clearInterval(intervalId)
+			updateScore(score)
+			$("#main_menu_btn").show().removeClass("d-none")
+		}, 500)
+
+		// Alternate interesting implementation,
+		// clearInterval(intervalId)
+		// setTimeout(function () {
+		// 	game.draw()
+		// 	updateScore(score)
+		// 	$("#main_menu_btn").show().removeClass("d-none")
+		// }, 1000)
 	})
 
 	game.on("no_more_life", function (score) {
-		clearInterval(intervalId)
-		game.draw()
-		updateScore(score)
-		$("#main_menu_btn").show().removeClass("d-none")
+		setTimeout(function () {
+			clearInterval(intervalId)
+			updateScore(score)
+			$("#main_menu_btn").show().removeClass("d-none")
+		}, 500)
 	})
 
 	function updateScore(score) {

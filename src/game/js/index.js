@@ -74,7 +74,7 @@ $(document).ready(function () {
 
 					$("<td>").html(res.data.topScores[index].user.name).appendTo(tr)
 					$("<td>").html(res.data.topScores[index].score).appendTo(tr)
-					$("<td>").html(new Date(res.data.topScores[index].createdAt).toLocaleString()).appendTo(tr)
+					$("<td>").html(new Date(res.data.topScores[index].updatedAt).toLocaleString()).appendTo(tr)
 
 					tbody.append(tr)
 				}

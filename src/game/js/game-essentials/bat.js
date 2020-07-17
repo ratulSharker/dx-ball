@@ -1,8 +1,8 @@
 function Bat(windowWidth, windowHeight) {
 
-	this.widthPercentageOfWindow = 15
+	this.widthPercentageOfWindow = 14
 	this.maxPercentage = 20
-	this.minPercentage = 10
+	this.minPercentage = 8
 
 	this.windowWidth = windowWidth
 	this.windowHeight = windowHeight
@@ -21,17 +21,19 @@ function Bat(windowWidth, windowHeight) {
 
 
 
-// Bat.prototype.increase = function() {
-// 	if(this.widthPercentageOfWindow < this.maxPercentage) {
-// 		this.widthPercentageOfWindow += 1
-// 	}
-// }
+Bat.prototype.increaseSize = function() {
+	if(this.widthPercentageOfWindow < this.maxPercentage) {
+		this.widthPercentageOfWindow += 2
+		this.rect.width = (this.windowWidth / 100.0) * this.widthPercentageOfWindow
+	}
+}
 
-// Bat.prototype.decrease = function() {
-// 	if(this.widthPercentageOfWindow > this.minPercentage) {
-// 		this.widthPercentageOfWindow -= 1
-// 	}
-// }
+Bat.prototype.decreaseSize = function() {
+	if(this.widthPercentageOfWindow > this.minPercentage) {
+		this.widthPercentageOfWindow -= 2
+		this.rect.width = (this.windowWidth / 100.0) * this.widthPercentageOfWindow
+	}
+}
 
 Bat.prototype.windowResized = function (windowWidth, windowHeight) {
 	this.windowWidth = windowWidth

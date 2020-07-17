@@ -1,4 +1,4 @@
-/* global Bat Ball stageDatas Stage */
+/* global Bat Ball stageDatas Stage Power roundRobinPowerProvider getPowerTypes */
 
 function Game(windowWidth, windowHeight, canvas) {
 	this.windowWidth = windowWidth
@@ -31,11 +31,15 @@ function Game(windowWidth, windowHeight, canvas) {
 	this.balls = []
 	this.balls.push(new Ball())
 
+	// power setup
+	this.currentPower = undefined
+	this.powerProvider = roundRobinPowerProvider()
+
 	// stage setup
 	this.currentStage = 0
 	this.stage = new Stage(windowWidth, windowHeight, stageDatas[this.currentStage])
 	var self = this
-	this.stage.on("end", function() {
+	this.stage.on("end", function () {
 		self.moveToNextStage()
 	})
 }
@@ -71,37 +75,6 @@ Game.prototype.startGame = function () {
 	this.curState = this.state.running
 }
 
-Game.prototype.draw = function () {
-
-	// clear screen
-	this.ctx.clearRect(0, 0, this.windowWidth, this.windowHeight)
-
-	if(this.curState == this.state.no_more_stages || this.curState == this.state.no_more_life) {
-		this.drawGameOver()
-		this.drawScore()
-		this.drawStageName()
-	} else {
-
-		this.drawLife()
-		this.drawScore()
-		this.drawStageName()
-
-		// NORMAL GAMEPLAY
-		this.operateBallBasedOnState()
-
-		// ball drawing
-		this.bat.draw(this.ctx)
-
-		// stage drawing
-		this.stage.draw(this.ctx)
-
-		// ball drawing
-		for (var index = 0; index < this.balls.length; index++) {
-			this.balls[index].draw(this.ctx)
-		}
-	}
-}
-
 Game.prototype.operateBallBasedOnState = function () {
 	if (this.curState == this.state.waiting) {
 		// Ball will stick to the bat
@@ -115,7 +88,7 @@ Game.prototype.operateBallBasedOnState = function () {
 
 			// window collision
 			var bottomCollided = this.balls[index].handleCollisionWithWindowReportBottomCollision(this.windowWidth, this.windowHeight)
-			if(bottomCollided) {
+			if (bottomCollided) {
 				this.ballDroppedToBottom()
 			}
 
@@ -124,6 +97,9 @@ Game.prototype.operateBallBasedOnState = function () {
 
 			// stage collision
 			const brickCollisionResult = this.stage.brickCollisionResult(this.balls[index])
+			if (brickCollisionResult) {
+				this.handlePowerGeneration(this.balls[index])
+			}
 			this.balls[index].handleBrickCollisionResult(brickCollisionResult)
 
 			// move ball
@@ -132,36 +108,158 @@ Game.prototype.operateBallBasedOnState = function () {
 	}
 }
 
+Game.prototype.operatePowerBasedOnState = function () {
+	if (this.curState == this.state.running && this.currentPower) {
+
+		var doesCollideWithBat = this.currentPower.reportBatCollision(this.bat.rect.x, this.bat.rect.width, this.bat.rect.y)
+
+		if (doesCollideWithBat) {
+			// Apply the power
+			// Remove the power
+			this.applyPower(this.currentPower.powerType)
+			this.currentPower = undefined
+		} else {
+			var doesCollideWithWindowBottom = this.currentPower.handleCollisionWithWindowReportBottomCollision(this.windowWidth, this.windowHeight)
+
+			if (doesCollideWithWindowBottom) {
+				this.currentPower = undefined
+			} else {
+				this.currentPower.move()
+			}
+		}
+	}
+}
+
+Game.prototype.applyPower = function (powerType) {
+	var powers = getPowerTypes()
+	switch (powerType) {
+	case powers.increaseLife: {
+		this.increaseLife()
+	}
+		break
+	case powers.decreaseLife: {
+		this.decreaseLife()
+	}
+		break
+	case powers.increaseBatSize: {
+		this.bat.increaseSize()
+	}
+		break
+	case powers.decreaseBatSize: {
+		this.bat.decreaseSize()
+	}
+		break
+	case powers.increaseBallSize: {
+		for(let index = 0; index < this.balls.length; index++) {
+			this.balls[index].increaseSize()
+		}
+	}
+		break
+	case powers.decreaseBallSize: {
+		for(let index = 0; index < this.balls.length; index++) {
+			this.balls[index].decreaseSize()
+		}
+	}
+		break
+	case powers.speedUpBall: {
+		for(let index = 0; index < this.balls.length; index++) {
+			this.balls[index].increaseSpeed()
+		}
+	}
+		break
+	case powers.slowDownBall: {
+		for(let index = 0; index < this.balls.length; index++) {
+			this.balls[index].decreaseSpeed()
+		}
+	}
+		break
+	}
+}
+
 Game.prototype.moveToNextStage = function () {
-	if(this.currentStage < stageDatas.length - 1) {
+
+	this.currentPower = undefined
+
+	if (this.currentStage < stageDatas.length - 1) {
 		this.currentStage++
 		this.curState = this.state.waiting
 		this.stage.setNewStageData(stageDatas[this.currentStage])
 	} else {
 		this.curState = this.state.no_more_stages
-		if(this.callbacks["all_stage_finished"]) {
+		if (this.callbacks["all_stage_finished"]) {
 			this.callbacks["all_stage_finished"](this.stage.score)
 		}
 	}
 }
 
-Game.prototype.ballDroppedToBottom = function() {
+// Give appropriate name
+Game.prototype.ballDroppedToBottom = function () {
+	this.currentPower = undefined
 	this.curState = this.state.waiting
 	this.lifeCount--
 
-	if(this.lifeCount == 0) {
+	if (this.lifeCount == 0) {
 		this.curState = this.state.no_more_life
-		if(this.callbacks["no_more_life"]) {
+		if (this.callbacks["no_more_life"]) {
 			this.callbacks["no_more_life"](this.stage.score)
 		}
 	}
 }
 
-Game.prototype.on = function(event, callback) {
+Game.prototype.handlePowerGeneration = function (ball) {
+	// Current scheme is generating power in each ball collision with brick,
+	// in case there is no power. Powers will appear in round robin fashion
+	if (!this.currentPower) {
+
+		this.currentPower = new Power(this.powerProvider(), ball.speedX, ball.speedY, ball.centerX, ball.centerY)
+	}
+}
+
+Game.prototype.on = function (event, callback) {
 	this.callbacks[event] = callback
 }
 
-Game.prototype.drawLife = function( ) {
+Game.prototype.draw = function () {
+
+	// clear screen
+	this.ctx.clearRect(0, 0, this.windowWidth, this.windowHeight)
+
+	if (this.curState == this.state.no_more_stages || this.curState == this.state.no_more_life) {
+		this.drawGameOver()
+		this.drawScore()
+		this.drawStageName()
+	} else {
+
+		this.drawLife()
+		this.drawScore()
+		this.drawStageName()
+
+		// Ball movement, collision reporting and handling
+		this.operateBallBasedOnState()
+
+		// Power movement, collision reporting and handling
+		this.operatePowerBasedOnState()
+
+
+		// ball drawing
+		this.bat.draw(this.ctx)
+
+		// stage drawing
+		this.stage.draw(this.ctx)
+
+		// power drawing
+		if (this.currentPower) {
+			this.currentPower.draw(this.ctx)
+		}
+
+		// ball drawing
+		for (var index = 0; index < this.balls.length; index++) {
+			this.balls[index].draw(this.ctx)
+		}
+	}
+}
+
+Game.prototype.drawLife = function () {
 	var heartImage = document.getElementById("heart_image")
 
 	var margin = 10
@@ -170,13 +268,13 @@ Game.prototype.drawLife = function( ) {
 
 	var curX = this.windowWidth - margin - width
 
-	for(var index = 0; index < this.lifeCount; index++) {
+	for (var index = 0; index < this.lifeCount; index++) {
 		this.ctx.drawImage(heartImage, curX, margin, width, height)
 		curX -= (margin + width)
 	}
 }
 
-Game.prototype.drawScore = function() {
+Game.prototype.drawScore = function () {
 	var margin = 10
 
 	this.ctx.fillStyle = "#FFFFFF"
@@ -186,7 +284,7 @@ Game.prototype.drawScore = function() {
 	this.ctx.fillText(`Score : ${this.stage.score}`, margin, margin)
 }
 
-Game.prototype.drawStageName = function() {
+Game.prototype.drawStageName = function () {
 
 	var margin = 10
 
@@ -197,21 +295,21 @@ Game.prototype.drawStageName = function() {
 	this.ctx.fillText(stageDatas[this.currentStage].name, this.windowWidth / 2, margin)
 }
 
-Game.prototype.drawGameOver = function() {
+Game.prototype.drawGameOver = function () {
 	var gameOverImage = document.getElementById("game_over_image")
 
 	var imageX = (this.windowWidth - gameOverImage.width) / 2
 
 	this.ctx.drawImage(gameOverImage, imageX, 50)
+}
 
-	// var margin = 10
-	// var width = 40
-	// var height = 40
+Game.prototype.increaseLife = function () {
+	var maxLife = 5	// So far it's here, no one other required it. If required place it in a suitable place
+	if(this.lifeCount < maxLife) {
+		this.lifeCount++
+	}
+}
 
-	// var curX = this.windowWidth - margin - width
-
-	// for(var index = 0; index < this.lifeCount; index++) {
-	// 	this.ctx.drawImage(heartImage, curX, margin, width, height)
-	// 	curX -= (margin + width)
-	// }
+Game.prototype.decreaseLife = function () {
+	this.ballDroppedToBottom()
 }

@@ -25,7 +25,8 @@ function Game(windowWidth, windowHeight, canvas) {
 		increaseBallSize: 5,
 		decreaseBallSize: 6,
 		speedUpBall: 7,
-		slowDownBall: 8
+		slowDownBall: 8,
+		addOneBall : 9
 	}
 
 	this.callbacks = {
@@ -104,12 +105,17 @@ Game.prototype.operateBall = function () {
 		}
 	} else {
 		// Ball will be moving in each frame
+		var extraBallsDroppedToBottom = []
 		for (index = 0; index < this.balls.length; index++) {
 
 			// window collision
 			var bottomCollided = this.balls[index].handleCollisionWithWindowReportBottomCollision(this.windowWidth, this.windowHeight)
 			if (bottomCollided) {
-				this.ballDroppedToBottom()
+				if(this.balls.length == 1) { //last ball
+					this.lastBallDroppedToBottom()
+				} else {
+					extraBallsDroppedToBottom.push(this.balls[index])
+				}
 			}
 
 			// bat collision
@@ -125,8 +131,16 @@ Game.prototype.operateBall = function () {
 			// move ball
 			this.balls[index].move()
 		}
+
+		for(index = 0; index < extraBallsDroppedToBottom.length; index++) {
+			var ballIndex = this.balls.indexOf(extraBallsDroppedToBottom[index])
+			if(ballIndex > -1) {
+				this.balls.splice(ballIndex, 1)
+			}
+		}
 	}
 }
+
 
 Game.prototype.operatePower = function () {
 	if (this.curState == this.state.running && this.currentPower) {
@@ -192,6 +206,11 @@ Game.prototype.applyPower = function (powerType) {
 		}
 	}
 		break
+	case this.powerTypes.addOneBall: {
+		var lastBall = this.balls[this.balls.length - 1]
+		this.balls.push(new Ball(lastBall.centerX, lastBall.centerY, lastBall.speed, lastBall.radius))
+	}
+		break
 	}
 }
 
@@ -246,7 +265,7 @@ Game.prototype.roundRobinPowerProvider = function() {
 }
 
 // Give appropriate name
-Game.prototype.ballDroppedToBottom = function () {
+Game.prototype.lastBallDroppedToBottom = function () {
 	this.currentPower = undefined
 	this.curState = this.state.waiting
 	this.lifeCount--
@@ -381,5 +400,5 @@ Game.prototype.increaseLife = function () {
 }
 
 Game.prototype.decreaseLife = function () {
-	this.ballDroppedToBottom()
+	this.lastBallDroppedToBottom()
 }

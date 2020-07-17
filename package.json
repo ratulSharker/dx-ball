@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon -r dotenv/config src/server.js dotenv_config_path=config.env  --exec 'npm run lint && node'",
-    "lint": "node ./node_modules/eslint/bin/eslint.js --fix --ignore-path .gitignore ."
+    "lint": "node ./node_modules/eslint/bin/eslint.js --fix --ignore-path .gitignore .",
+    "start" : "nodemon -r dotenv/config src/server.js dotenv_config_path=config.env"
   },
   "repository": {
     "type": "git",

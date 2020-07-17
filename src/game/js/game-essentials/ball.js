@@ -48,8 +48,22 @@ Ball.prototype.initialAngleSpeedSetup = function () {
 
 Ball.prototype.adjustNewSpeed = function () {
 
-	this.speedX = Math.cos(this.angle) * this.speed * (this.speedX > 0 ? 1 : -1)
-	this.speedY = Math.sin(this.angle) * this.speed * (this.speedY > 0 ? 1 : -1)
+	var prevSpeedX = this.speedX
+	var prevSpeedY = this.speedY
+
+	this.speedX = Math.cos(this.angle) * this.speed
+	this.speedY = Math.sin(this.angle) * this.speed
+
+	// signs needed to be matched
+	if((prevSpeedX * this.speedX) < 0) {
+		// their signs are opposite
+		this.speedX *= -1
+	}
+
+	if((prevSpeedY * this.speedY) < 0) {
+		// their signs are opposite
+		this.speedY *= -1
+	}
 }
 
 Ball.prototype.move = function () {

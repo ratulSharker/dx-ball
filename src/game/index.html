@@ -51,7 +51,14 @@
             </div>
 
             <div class="p-2">
-                <button type="button" class="btn btn-outline-primary d-block" id="hall-of-fame" data-toggle="modal"
+                <button type="button" class="btn btn-outline-warning d-block" data-toggle="modal"
+                    data-target="#powerLegendModal">
+                    Power Legend
+                </button>
+            </div>
+
+            <div class="p-2">
+                <button type="button" class="btn btn-outline-primary d-block" id="hall-of-fame-btn" data-toggle="modal"
                     data-target="#hallOfFameModal">
                     Hall of fame
                 </button>
@@ -129,6 +136,102 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal" id="login-btn">Login</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Hall of fame dialog -->
+    <div class="modal fade" id="powerLegendModal" tabindex="-1" role="dialog" aria-labelledby="powerLegendModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="powerLegendModalLabel">Lengeds</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table">
+                        <thead>
+                            <!-- <tr>
+                                <th>Legend</th>
+                                <th>Meaning</th>
+                            </tr> -->
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src="./images/heart.png" class="legend-image" alt="">
+                                </td>
+                                <td>
+                                    <p>+1 Life</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="./images/power/skull.png" class="legend-image" alt="">
+                                </td>
+                                <td>
+                                    <p>-1 Life</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="./images/power/size_up.png" class="legend-image" alt="">
+                                </td>
+                                <td>
+                                    <p>Increase Bat Size</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="./images/power/size_down.png" class="legend-image" alt="">
+                                </td>
+                                <td>
+                                    <p>Decrease Bat Size</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="./images/power/big_ball.png" class="legend-image" alt="">
+                                </td>
+                                <td>
+                                    <p>Increase Ball Size</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="./images/power/small_ball.png" class="legend-image" alt="">
+                                </td>
+                                <td>
+                                    <p>Decrease Ball Size</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="./images/power/rocket.png" class="legend-image" alt="">
+                                </td>
+                                <td>
+                                    <p>Speed Up Ball</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="./images/power/snail.png" class="legend-image" alt="">
+                                </td>
+                                <td>
+                                    <p>Slow Down Ball</p>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>

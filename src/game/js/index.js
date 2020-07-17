@@ -7,7 +7,7 @@ $(document).ready(function () {
 	$("#register-btn").click(handleRegister)
 	$("#reset-password-btn").click(handleResetPassword)
 	$("#play-btn").click(gameplayTapped)
-	$("#hall-of-fame").click(hallOfFameTapped)
+	$("#hall-of-fame-btn").click(hallOfFameTapped)
 	$("#logout-btn").click(handleLogout)
 	var api = new Api()
 

@@ -35,6 +35,8 @@ Stage.prototype.draw = function (ctx) {
 
 	if(brickCount == 0 && this.callbacks["end"]) {
 		this.callbacks["end"]()
+	} else if(brickCount == 1 && this.callbacks["last_brick"]) {
+		this.callbacks["last_brick"]()
 	}
 }
 

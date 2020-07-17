@@ -38,6 +38,14 @@ $(document).ready(function () {
 			updateScore(score)
 			$("#main_menu_btn").show().removeClass("d-none")
 		}, 500)
+
+		// Alternate interesting implementation,
+		// clearInterval(intervalId)
+		// setTimeout(function () {
+		// 	game.draw()
+		// 	updateScore(score)
+		// 	$("#main_menu_btn").show().removeClass("d-none")
+		// }, 1000)
 	})
 
 	game.on("no_more_life", function (score) {

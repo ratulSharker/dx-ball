@@ -289,6 +289,7 @@ Game.prototype.handlePowerGeneration = function (ball) {
 	if (!this.currentPower) {
 
 		this.currentPower = new Power(this.powerProvider(), ball.speedX, ball.speedY, ball.centerX, ball.centerY)
+		this.currentPower.windowResized(this.windowWidth, this.windowHeight)
 	}
 }
 

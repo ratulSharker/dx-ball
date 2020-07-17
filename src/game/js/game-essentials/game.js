@@ -1,4 +1,4 @@
-/* global Bat Ball stageDatas Stage Power roundRobinPowerProvider getPowerTypes */
+/* global Bat Ball stageDatas Stage Power roundRobinPowerProvider getPowerTypes Timer*/
 
 function Game(windowWidth, windowHeight, canvas) {
 	this.windowWidth = windowWidth
@@ -41,6 +41,10 @@ function Game(windowWidth, windowHeight, canvas) {
 	var self = this
 	this.stage.on("end", function () {
 		self.moveToNextStage()
+	})
+	this.lastBrickTimer = undefined
+	this.stage.on("last_brick", function() {
+		self.startLastBrickTimer()
 	})
 }
 
@@ -185,6 +189,11 @@ Game.prototype.moveToNextStage = function () {
 
 	this.currentPower = undefined
 
+	if(this.lastBrickTimer) {
+		this.lastBrickTimer.stop()
+		this.lastBrickTimer = undefined
+	}
+
 	if (this.currentStage < stageDatas.length - 1) {
 		this.currentStage++
 		this.curState = this.state.waiting
@@ -195,6 +204,20 @@ Game.prototype.moveToNextStage = function () {
 			this.callbacks["all_stage_finished"](this.stage.score)
 		}
 	}
+}
+
+Game.prototype.startLastBrickTimer = function () {
+	if(this.lastBrickTimer) {
+		// already present, no need to start
+		return
+	}
+
+	this.lastBrickTimer = new Timer(59)
+	var self = this
+	this.lastBrickTimer.on("end", function() {
+		self.lastBrickTimer = undefined
+		self.moveToNextStage()
+	})
 }
 
 // Give appropriate name
@@ -265,6 +288,9 @@ Game.prototype.draw = function () {
 		for (var index = 0; index < this.balls.length; index++) {
 			this.balls[index].draw(this.ctx)
 		}
+
+		// last brick remaining time
+		this.drawLastBrickRemainingTime()
 	}
 }
 
@@ -310,6 +336,16 @@ Game.prototype.drawGameOver = function () {
 	var imageX = (this.windowWidth - gameOverImage.width) / 2
 
 	this.ctx.drawImage(gameOverImage, imageX, 50)
+}
+
+Game.prototype.drawLastBrickRemainingTime = function() {
+	if(this.lastBrickTimer) {
+		this.ctx.fillStyle = "#FF0000"
+		this.ctx.font = "40px Comic Sans MS"
+		this.ctx.textBaseline = "center"
+		this.ctx.textAlign = "center"
+		this.ctx.fillText(`${this.lastBrickTimer.remainingSeconds()}`, this.windowWidth / 2, this.windowHeight / 2)
+	}
 }
 
 Game.prototype.increaseLife = function () {

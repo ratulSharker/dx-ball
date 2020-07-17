@@ -12,3 +12,8 @@ body {
 .button-group {
     z-index: 1000;
 }
+
+.legend-image {
+    width: 25px;
+    height: 25px;
+}

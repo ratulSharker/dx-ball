@@ -118,9 +118,6 @@ Ball.prototype.handleBrickCollisionResult = function (brickCollisionResult) {
 			this.flipSpeedVertically()
 		} else if (brickCollisionResult == "left" || brickCollisionResult == "right") {
 			this.flipSpeedHorizontally()
-		} else {
-			// it's the corner
-			this.flipSpeedHorizontally()
 		}
 	}
 }
@@ -195,7 +192,7 @@ Ball.prototype.draw = function (ctx) {
 	ctx.fill()
 }
 
-// returns hit direction `top`, `bottom`, `left`, `right`, "top-left", "top-right", "bottom-left", "bottom-right"
+// returns hit direction `top`, `bottom`, `left`, `right`
 Ball.prototype.hitDirection = function (rect) {
 
 	const nextCenter = this.centerAfterNextMove()
@@ -211,43 +208,23 @@ Ball.prototype.hitDirection = function (rect) {
 	const rectBottomY = rect.y + rect.height
 
 	// top hit
-	if (ballBottomY >= rectTopY && ballBottomY <= rectBottomY && ballLeftX >= rectLeftX && ballRightX <= rectRightX) {
+	if (ballBottomY >= rectTopY && ballBottomY < rectBottomY  && nextCenter.centerX >= rectLeftX && nextCenter.centerX <= rectRightX && this.speedY > 0) {
 		return "top"
 	}
 
 	// bottom hit
-	if (ballTopY >= rectTopY && ballTopY <= rectBottomY && ballLeftX >= rectLeftX && ballRightX <= rectRightX) {
+	if (ballTopY > rectTopY && ballTopY <= rectBottomY && nextCenter.centerX >= rectLeftX && nextCenter.centerX <= rectRightX && this.speedY < 0) {
 		return "bottom"
 	}
 
 	// left hit
-	if (ballRightX >= rectLeftX && ballRightX < rectRightX && ballTopY >= rectTopY && ballBottomY <= rectBottomY) {
+	if (ballRightX >= rectLeftX && ballRightX < rectRightX && nextCenter.centerY >= rectTopY && nextCenter.centerY <= rectBottomY && this.speedX > 0) {
 		return "left"
 	}
 
 	// right hit
-	if (ballLeftX >= rectLeftX && ballLeftX < rectRightX && ballTopY >= rectTopY && ballBottomY <= rectBottomY) {
+	if (ballLeftX <= rectRightX && ballLeftX > rectLeftX && nextCenter.centerY >= rectTopY && nextCenter.centerY <= rectBottomY && this.speedX < 0) {
 		return "right"
-	}
-
-	// top-left
-	if (this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectLeftX, rectTopY)) {
-		return "top-left"
-	}
-
-	// top-right
-	if (this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectRightX, rectTopY)) {
-		return "top-right"
-	}
-
-	// bottom-left
-	if (this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectLeftX, rectBottomY)) {
-		return "bottom-left"
-	}
-
-	// bottom-right
-	if (this.isInsideCircle(nextCenter.centerX, nextCenter.centerY, this.radius, rectRightX, rectBottomY)) {
-		return "bottom-right"
 	}
 
 	return undefined

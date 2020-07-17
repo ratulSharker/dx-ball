@@ -7,12 +7,7 @@ function Ball() {
 	this.centerX = this.radius
 	this.centerY = this.radius
 
-
-	this.speed = 10
-
-	this.angle = (Math.PI / 4)
-	this.speedX = Math.cos(this.angle) * this.speed
-	this.speedY = -Math.sin(this.angle) * this.speed
+	this.initialAngleSpeedSetup()
 
 	this.maxSpeed = 18
 	this.minSpeed = 6
@@ -44,6 +39,12 @@ Ball.prototype.decreaseSpeed = function( ) {
 	}
 }
 
+Ball.prototype.initialAngleSpeedSetup = function () {
+	this.speed = 10
+	this.angle = (Math.PI / 4)
+	this.speedX = Math.cos(this.angle) * this.speed
+	this.speedY = -Math.sin(this.angle) * this.speed
+}
 
 Ball.prototype.adjustNewSpeed = function () {
 

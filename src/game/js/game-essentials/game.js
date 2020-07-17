@@ -203,6 +203,11 @@ Game.prototype.ballDroppedToBottom = function () {
 	this.curState = this.state.waiting
 	this.lifeCount--
 
+	// Reset ball angles
+	for(let index = 0; index < this.balls.length; index++) {
+		this.balls[index].initialAngleSpeedSetup()
+	}
+
 	if (this.lifeCount == 0) {
 		this.curState = this.state.no_more_life
 		if (this.callbacks["no_more_life"]) {

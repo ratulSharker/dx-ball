@@ -62,6 +62,11 @@ Game.prototype.windowResized = function (windowWidth, windowHeight) {
 		this.balls[index].windowResized(windowWidth, windowHeight)
 	}
 
+	// power update
+	if(this.currentPower) {
+		this.currentPower.windowResized()
+	}
+
 	// stage update
 	this.stage.windowResized(windowWidth, windowHeight)
 }

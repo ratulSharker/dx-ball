@@ -1,35 +1,3 @@
-/* eslint-disable no-unused-vars */
-function getPowerTypes() {
-	return {
-		increaseLife: 1,
-		decreaseLife: 2,
-		increaseBatSize: 3,
-		decreaseBatSize: 4,
-		increaseBallSize: 5,
-		decreaseBallSize: 6,
-		speedUpBall: 7,
-		slowDownBall: 8
-	}
-}
-
-
-function roundRobinPowerProvider() {
-	var powers = getPowerTypes()
-	var nextPower = powers.increaseLife
-	var totalPowerCount = Object.keys(powers).length
-
-	return function() {
-		var curPowerToReturn = nextPower
-		nextPower = (nextPower + 1)
-		if(nextPower > totalPowerCount) {
-			nextPower = 1
-		}
-		return curPowerToReturn
-	}
-
-}
-/* eslint-enable no-unused-vars */
-
 function Power(powerType, initialSpeedX, initialSpeedY, curX, curY) {
 	this.powerType = powerType
 
@@ -110,7 +78,7 @@ Power.prototype.windowResized = function (wWidth, wHeight) {
 	}
 }
 
-Power.prototype.reportBatCollision = function (batX, batWidth, batTopY) {
+Power.prototype.doesCollideWithBat = function (batX, batWidth, batTopY) {
 
 	var nextOrigin = this.nextOrigin()
 	var powerBottomY = nextOrigin.y + this.rect.height

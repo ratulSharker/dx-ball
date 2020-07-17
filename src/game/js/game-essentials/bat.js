@@ -41,15 +41,15 @@ Bat.prototype.windowResized = function (windowWidth, windowHeight) {
 
 	this.rect.y = windowHeight - this.margin - this.rect.height,
 	this.rect.width = (windowWidth / 100.0) * this.widthPercentageOfWindow
-	this.repositionBat()
+	this.repositionBatInsideWindow()
 }
 
 Bat.prototype.mouseMoved = function(cursorX) {
 	this.rect.x = cursorX - (this.rect.width / 2)
-	this.repositionBat()
+	this.repositionBatInsideWindow()
 }
 
-Bat.prototype.repositionBat = function() {
+Bat.prototype.repositionBatInsideWindow = function() {
 	// Bat is out of the window - left side
 	if(this.rect.x < this.margin) {
 		this.rect.x = this.margin

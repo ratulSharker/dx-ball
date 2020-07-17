@@ -42,14 +42,14 @@ Stage.prototype.draw = function (ctx) {
 
 // It will return next ball hit direction
 // "top", "bottom", "left", "right"
-Stage.prototype.brickCollisionResult = function (ball) {
+Stage.prototype.handleBrickCollisionWithBallAndReportCollision = function (ball) {
 
 	// ball is within stage rectangle, now check for each brick to have collision with ball or not
 	var self = this
 	var collideResult = undefined
 	this.traverseBricks(function(brickValue, x, y, width, height, row, col) {
 		if (brickValue > 0) {
-			const collide = ball.hitDirection({
+			const collide = ball.calculateHitDirectionWithRect({
 				x: x,
 				y: y,
 				width: width,

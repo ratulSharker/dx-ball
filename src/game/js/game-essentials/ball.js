@@ -86,7 +86,7 @@ Ball.prototype.centerAfterNextMove = function () {
 	}
 }
 
-Ball.prototype.stickBottom = function (posX, posY) {
+Ball.prototype.stickBottomToPoint = function (posX, posY) {
 	this.centerX = posX
 	this.centerY = posY - this.radius
 }
@@ -122,7 +122,7 @@ Ball.prototype.handleBrickCollisionResult = function (brickCollisionResult) {
 	}
 }
 
-Ball.prototype.collisionWithBat = function (batX, batWidth, batTopY) {
+Ball.prototype.handleCollisionWithBat = function (batX, batWidth, batTopY) {
 
 	var nextCenter = this.centerAfterNextMove()
 	var ballBottomY = nextCenter.centerY + this.radius
@@ -193,7 +193,7 @@ Ball.prototype.draw = function (ctx) {
 }
 
 // returns hit direction `top`, `bottom`, `left`, `right`
-Ball.prototype.hitDirection = function (rect) {
+Ball.prototype.calculateHitDirectionWithRect = function (rect) {
 
 	const nextCenter = this.centerAfterNextMove()
 
@@ -228,17 +228,4 @@ Ball.prototype.hitDirection = function (rect) {
 	}
 
 	return undefined
-}
-
-Ball.prototype.isInsideCircle = function (centerX, centerY, radius, pX, pY) {
-	const distance = this.distance(centerX, centerY, pX, pY)
-
-	return distance <= radius
-}
-
-Ball.prototype.distance = function (aX, aY, bX, bY) {
-	const dx = aX - bX
-	const dy = aY - bY
-
-	return Math.sqrt(dx * dx + dy * dy)
 }

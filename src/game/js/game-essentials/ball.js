@@ -7,12 +7,7 @@ function Ball() {
 	this.centerX = this.radius
 	this.centerY = this.radius
 
-
-	this.speed = 10
-
-	this.angle = (Math.PI / 4)
-	this.speedX = Math.cos(this.angle) * this.speed
-	this.speedY = -Math.sin(this.angle) * this.speed
+	this.initialAngleSpeedSetup()
 
 	this.maxSpeed = 18
 	this.minSpeed = 6
@@ -44,6 +39,12 @@ Ball.prototype.decreaseSpeed = function( ) {
 	}
 }
 
+Ball.prototype.initialAngleSpeedSetup = function () {
+	this.speed = 10
+	this.angle = (Math.PI / 4)
+	this.speedX = Math.cos(this.angle) * this.speed
+	this.speedY = -Math.sin(this.angle) * this.speed
+}
 
 Ball.prototype.adjustNewSpeed = function () {
 
@@ -122,12 +123,25 @@ Ball.prototype.collisionWithBat = function (batX, batWidth, batTopY) {
 
 		var batRightMostRadian = 0.523599 // 30 Degree
 		var batLeftMostRadian = 2.61799 // 150 Degree
+		var nintyDegreeInRadian = Math.PI / 2
+		var seventySixDegreeInRadian = 1.32645 // 76 Degree
+		var hundredAndFourDegreeInRadian = 1.81514 // 104 Degree
 
 		var angleDeviation = batLeftMostRadian - batRightMostRadian
 		var collisionDeviation = batX + batWidth - nextCenter.centerX
 
 		// Simple interpolation
 		this.angle = batRightMostRadian + (collisionDeviation / batWidth) * angleDeviation
+
+		// Omitting straight 90 Degree movement
+		if(this.angle > seventySixDegreeInRadian && this.angle < hundredAndFourDegreeInRadian) {
+			if(this.angle > nintyDegreeInRadian) {
+				this.angle = hundredAndFourDegreeInRadian
+			} else {
+				this.angle = seventySixDegreeInRadian
+			}
+		}
+
 		this.speedX = Math.cos(this.angle) * this.speed
 		this.speedY = Math.sin(this.angle) * this.speed
 

@@ -1,4 +1,4 @@
-function Stage(windowWidth, windowHeight, stageData) {
+function Stage(windowWidth, windowHeight, stageData, canvas) {
 	this.margin = {
 		top: 100,
 		left: 10,
@@ -14,14 +14,32 @@ function Stage(windowWidth, windowHeight, stageData) {
 	}
 
 	this.score = 0
+
+	this.ctx = canvas.getContext("2d")
+	this.ctx.canvas.width = windowWidth
+	this.ctx.canvas.height = windowHeight
+	this.ctx.canvas.style.position = "absolute"
+	this.ctx.canvas.style.left = "0px"
+	this.ctx.canvas.style.top = "0px"
+
+	this.draw()
 }
 
 Stage.prototype.windowResized = function (windowWidth, windowHeight) {
 	this.windowWidth = windowWidth
 	this.windowHeight = windowHeight
+
+	this.ctx.canvas.width = windowWidth
+	this.ctx.canvas.height = windowHeight
+
+	this.draw()
 }
 
-Stage.prototype.draw = function (ctx) {
+Stage.prototype.draw = function () {
+
+	// this.ctx.fillStyle = "#FF00FF"
+	// this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
+	this.clearDrawing()
 
 	const self = this
 	var brickCount = 0
@@ -35,8 +53,8 @@ Stage.prototype.draw = function (ctx) {
 				width: width,
 				height: height
 			}
-			ctx.fillStyle = self.stageData.colorByType[brickValue]
-			ctx.fillRect(x, y, width, height)
+			self.ctx.fillStyle = self.stageData.colorByType[brickValue]
+			self.ctx.fillRect(x, y, width, height)
 		}
 	})
 
@@ -45,6 +63,10 @@ Stage.prototype.draw = function (ctx) {
 	} else if(brickCount == 1 && this.callbacks["last_brick"]) {
 		this.callbacks["last_brick"](brickRect)
 	}
+}
+
+Stage.prototype.clearDrawing = function() {
+	this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
 }
 
 // It will return next ball hit direction

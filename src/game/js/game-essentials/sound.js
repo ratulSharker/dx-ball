@@ -46,3 +46,21 @@ Sound.prototype.playBallBounce = function() {
 Sound.prototype.stopBallBounce = function() {
 	this.stop("ball_bounce")
 }
+
+
+// Music setting will use these.
+Sound.prototype.storeMusicVolume = function(volume) {
+	localStorage.setItem("music_volume", volume)
+}
+
+Sound.prototype.getMusicVolume = function() {
+	return localStorage.getItem("music_volume") || 0.8
+}
+
+Sound.prototype.storeSFXVolume = function(volume) {
+	localStorage.setItem("sfx_volume", volume)
+}
+
+Sound.prototype.getSFXVolume = function() {
+	return localStorage.getItem("sfx_volume") || 0.3
+}

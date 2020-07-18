@@ -1,6 +1,6 @@
 /* global Bat Ball stageDatas Stage Power Sound LastBrickCrackingHandler*/
 
-function Game(windowWidth, windowHeight, canvas) {
+function Game(windowWidth, windowHeight, canvas, batCanvas) {
 	this.windowWidth = windowWidth
 	this.windowHeight = windowHeight
 
@@ -38,7 +38,7 @@ function Game(windowWidth, windowHeight, canvas) {
 	this.lifeCount = 2
 
 	// bat setup
-	this.bat = new Bat(windowWidth, windowHeight)
+	this.bat = new Bat(windowWidth, windowHeight, batCanvas)
 	this.bat.windowResized(windowWidth, windowHeight)
 
 	// ball setup
@@ -84,7 +84,6 @@ Game.prototype.windowResized = function (windowWidth, windowHeight) {
 }
 
 Game.prototype.mouseMoved = function (cursorX) {
-
 	this.bat.mouseMoved(cursorX)
 }
 
@@ -132,7 +131,8 @@ Game.prototype.operateBall = function () {
 			}
 
 			// bat collision
-			const ballBatCollided = this.balls[index].handleCollisionWithBat(this.bat.rect.x, this.bat.rect.width, this.bat.rect.y)
+			var batRect = this.bat.relativeBatRect()
+			const ballBatCollided = this.balls[index].handleCollisionWithBat(batRect.x, batRect.width, batRect.y)
 			if (ballBatCollided) {
 				this.soundMgr.stopBallHitBat()
 				this.soundMgr.playBallHitBat()
@@ -164,7 +164,8 @@ Game.prototype.operateBall = function () {
 Game.prototype.operatePower = function () {
 	if (this.curState == this.state.running && this.currentPower) {
 
-		var collide = this.currentPower.doesCollideWithBat(this.bat.rect.x, this.bat.rect.width, this.bat.rect.y)
+		var batRect = this.bat.relativeBatRect()
+		var collide = this.currentPower.doesCollideWithBat(batRect.x, batRect.width, batRect.y)
 
 		if (collide) {
 			// Apply the power
@@ -344,9 +345,6 @@ Game.prototype.draw = function () {
 		// Power movement, collision reporting and handling
 		this.operatePower()
 
-
-		// ball drawing
-		this.bat.draw(this.ctx)
 
 		// stage drawing
 		this.stage.draw(this.ctx)

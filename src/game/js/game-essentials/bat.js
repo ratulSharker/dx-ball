@@ -1,4 +1,4 @@
-function Bat(windowWidth, windowHeight) {
+function Bat(windowWidth, windowHeight, canvas) {
 
 	this.widthPercentageOfWindow = 14
 	this.maxPercentage = 20
@@ -13,10 +13,26 @@ function Bat(windowWidth, windowHeight) {
 
 	this.rect = {
 		x : this.margin,
-		y : windowHeight - this.margin - height,
+		y : 0,
 		width: (windowWidth / 100.0) * this.widthPercentageOfWindow,
 		height: height
 	}
+	this.canvasRect = {
+		x : 0,
+		y : this.windowHeight - this.margin - this.rect.height,
+		width: windowWidth,
+		height: this.margin + this.rect.height
+	}
+
+	this.ctx = canvas.getContext("2d", {
+		alpha : false
+	})
+	this.ctx.canvas.width = this.canvasRect.width
+	this.ctx.canvas.height = this.canvasRect.height
+
+	this.ctx.canvas.style.left = `${this.canvasRect.x}px`
+	this.ctx.canvas.style.top = `${this.canvasRect.y}px`
+	this.ctx.canvas.style.position = "absolute"
 }
 
 
@@ -39,14 +55,20 @@ Bat.prototype.windowResized = function (windowWidth, windowHeight) {
 	this.windowWidth = windowWidth
 	this.windowHeight = windowHeight
 
-	this.rect.y = windowHeight - this.margin - this.rect.height,
+	this.canvasRect.y = windowHeight - this.margin - this.rect.height
+	this.canvasRect.width = windowWidth
+
+	this.ctx.canvas.style.top = `${this.canvasRect.y}px`
+
 	this.rect.width = (windowWidth / 100.0) * this.widthPercentageOfWindow
 	this.repositionBatInsideWindow()
+	this.draw()
 }
 
 Bat.prototype.mouseMoved = function(cursorX) {
 	this.rect.x = cursorX - (this.rect.width / 2)
 	this.repositionBatInsideWindow()
+	this.draw()
 }
 
 Bat.prototype.repositionBatInsideWindow = function() {
@@ -61,22 +83,31 @@ Bat.prototype.repositionBatInsideWindow = function() {
 	}
 }
 
-Bat.prototype.draw = function(ctx) {
-	ctx.fillStyle = "#b89ae4"
+Bat.prototype.draw = function() {
+	this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
 
-	ctx.fillRect(
+	this.ctx.fillStyle = "#b89ae4"
+
+	this.ctx.fillRect(
 		this.rect.x,
 		this.rect.y,
 		this.rect.width,
 		this.rect.height
 	)
-
-	// console.log(this.rect)
 }
 
 Bat.prototype.centerTop = function() {
 	return {
 		x : this.rect.x + (this.rect.width / 2.0),
-		y : this.rect.y
+		y : this.canvasRect.y
+	}
+}
+
+Bat.prototype.relativeBatRect = function() {
+	return {
+		x : this.rect.x,
+		y : this.canvasRect.y,
+		width: this.rect.width,
+		height: this.rect.height
 	}
 }

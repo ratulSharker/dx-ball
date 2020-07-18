@@ -14,6 +14,7 @@ var stageDatas = [
 			vertical: 2,
 			horizontal: 2
 		},
+		soundId: "gameplay_pursuit",
 		brickHeight: 40,
 		colorByType: {
 			1: "#01a900",
@@ -39,6 +40,7 @@ var stageDatas = [
 			vertical: 2,
 			horizontal: 2
 		},
+		soundId: "gameplay_mission",
 		brickHeight: 40,
 		colorByType: {
 			1: "#01a900",

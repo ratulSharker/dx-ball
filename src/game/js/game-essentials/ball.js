@@ -157,6 +157,7 @@ Ball.prototype.handleCollisionWithBat = function (batX, batWidth, batTopY) {
 		this.speedY = Math.sin(this.angle) * this.speed
 
 		this.flipSpeedVertically()
+		return true
 	}
 }
 

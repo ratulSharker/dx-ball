@@ -94,8 +94,8 @@ Game.prototype.initialStageSetup = function(windowWidth, windowHeight) {
 		self.moveToNextStage()
 	})
 	this.lastBrickCrackingHandler = undefined
-	this.stage.on("last_brick", function () {
-		self.handleLastBrickRemaining()
+	this.stage.on("last_brick", function (lastBrickRect) {
+		self.handleLastBrickRemaining(lastBrickRect)
 	})
 }
 
@@ -253,11 +253,11 @@ Game.prototype.moveToNextStage = function () {
 	}
 }
 
-Game.prototype.handleLastBrickRemaining = function () {
+Game.prototype.handleLastBrickRemaining = function (lastBrickRect) {
 	if (!this.lastBrickCrackingHandler && this.curState == this.state.running) {
 		this.soundMgr.stop(stageDatas[this.currentStage].soundId)
 		console.log("handle last brick remaining called")
-		this.lastBrickCrackingHandler = new LastBrickCrackingHandler(30, this.soundMgr)
+		this.lastBrickCrackingHandler = new LastBrickCrackingHandler(30, this.soundMgr, lastBrickRect)
 		var self = this
 		this.lastBrickCrackingHandler.on("end", function() {
 			self.lastBrickCrackingHandler = undefined
@@ -356,6 +356,11 @@ Game.prototype.draw = function () {
 		// ball drawing
 		for (var index = 0; index < this.balls.length; index++) {
 			this.balls[index].draw(this.ctx)
+		}
+
+		// thunder drawing
+		if(this.lastBrickCrackingHandler) {
+			this.lastBrickCrackingHandler.draw(this.ctx)
 		}
 
 		// last brick remaining time

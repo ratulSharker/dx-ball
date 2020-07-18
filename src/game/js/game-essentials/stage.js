@@ -1,6 +1,6 @@
 function Stage(windowWidth, windowHeight, stageData) {
 	this.margin = {
-		top: 55,
+		top: 100,
 		left: 10,
 		right: 10,
 		bottom: 0
@@ -25,9 +25,16 @@ Stage.prototype.draw = function (ctx) {
 
 	const self = this
 	var brickCount = 0
+	var brickRect = undefined
 	this.traverseBricks(function (brickValue, x, y, width, height) {
 		if (brickValue > 0) {
 			brickCount++
+			brickRect = {
+				x : x,
+				y : y,
+				width: width,
+				height: height
+			}
 			ctx.fillStyle = self.stageData.colorByType[brickValue]
 			ctx.fillRect(x, y, width, height)
 		}
@@ -36,7 +43,7 @@ Stage.prototype.draw = function (ctx) {
 	if(brickCount == 0 && this.callbacks["end"]) {
 		this.callbacks["end"]()
 	} else if(brickCount == 1 && this.callbacks["last_brick"]) {
-		this.callbacks["last_brick"]()
+		this.callbacks["last_brick"](brickRect)
 	}
 }
 

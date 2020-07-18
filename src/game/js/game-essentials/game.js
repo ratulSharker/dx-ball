@@ -1,4 +1,4 @@
-/* global Bat Ball stageDatas Stage Power Timer*/
+/* global Bat Ball stageDatas Stage Power Timer Sound */
 
 function Game(windowWidth, windowHeight, canvas) {
 	this.windowWidth = windowWidth
@@ -26,7 +26,7 @@ function Game(windowWidth, windowHeight, canvas) {
 		decreaseBallSize: 6,
 		speedUpBall: 7,
 		slowDownBall: 8,
-		addOneBall : 9
+		addOneBall: 9
 	}
 
 	this.callbacks = {
@@ -47,17 +47,11 @@ function Game(windowWidth, windowHeight, canvas) {
 	this.currentPower = undefined
 	this.powerProvider = this.roundRobinPowerProvider()
 
+	// sound setup
+	this.soundMgr = new Sound()
+
 	// stage setup
-	this.currentStage = 0
-	this.stage = new Stage(windowWidth, windowHeight, stageDatas[this.currentStage])
-	var self = this
-	this.stage.on("end", function () {
-		self.moveToNextStage()
-	})
-	this.lastBrickTimer = undefined
-	this.stage.on("last_brick", function() {
-		self.startLastBrickTimer()
-	})
+	this.initialStageSetup(windowWidth, windowHeight)
 }
 
 Game.prototype.windowResized = function (windowWidth, windowHeight) {
@@ -79,7 +73,7 @@ Game.prototype.windowResized = function (windowWidth, windowHeight) {
 	}
 
 	// power update
-	if(this.currentPower) {
+	if (this.currentPower) {
 		this.currentPower.windowResized()
 	}
 
@@ -92,8 +86,22 @@ Game.prototype.mouseMoved = function (cursorX) {
 	this.bat.mouseMoved(cursorX)
 }
 
+Game.prototype.initialStageSetup = function(windowWidth, windowHeight) {
+	this.currentStage = 0
+	this.stage = new Stage(windowWidth, windowHeight, stageDatas[this.currentStage])
+	var self = this
+	this.stage.on("end", function () {
+		self.moveToNextStage()
+	})
+	this.lastBrickTimer = undefined
+	this.stage.on("last_brick", function () {
+		self.handleLastBrickRemaining()
+	})
+}
+
 Game.prototype.startGame = function () {
 	this.curState = this.state.running
+	this.soundMgr.playInLoop(stageDatas[this.currentStage].soundId)
 }
 
 Game.prototype.operateBall = function () {
@@ -111,7 +119,7 @@ Game.prototype.operateBall = function () {
 			// window collision
 			var bottomCollided = this.balls[index].handleCollisionWithWindowReportBottomCollision(this.windowWidth, this.windowHeight)
 			if (bottomCollided) {
-				if(this.balls.length == 1) { //last ball
+				if (this.balls.length == 1) { //last ball
 					this.lastBallDroppedToBottom()
 				} else {
 					extraBallsDroppedToBottom.push(this.balls[index])
@@ -119,11 +127,17 @@ Game.prototype.operateBall = function () {
 			}
 
 			// bat collision
-			this.balls[index].handleCollisionWithBat(this.bat.rect.x, this.bat.rect.width, this.bat.rect.y)
+			const ballBatCollided = this.balls[index].handleCollisionWithBat(this.bat.rect.x, this.bat.rect.width, this.bat.rect.y)
+			if (ballBatCollided) {
+				this.soundMgr.stopBallHitBat()
+				this.soundMgr.playBallHitBat()
+			}
 
 			// stage collision
 			const brickCollisionResult = this.stage.handleBrickCollisionWithBallAndReportCollision(this.balls[index])
 			if (brickCollisionResult) {
+				this.soundMgr.stopBallBounce()
+				this.soundMgr.playBallBounce()
 				this.handlePowerGeneration(this.balls[index])
 			}
 			this.balls[index].handleBrickCollisionResult(brickCollisionResult)
@@ -132,9 +146,9 @@ Game.prototype.operateBall = function () {
 			this.balls[index].move()
 		}
 
-		for(index = 0; index < extraBallsDroppedToBottom.length; index++) {
+		for (index = 0; index < extraBallsDroppedToBottom.length; index++) {
 			var ballIndex = this.balls.indexOf(extraBallsDroppedToBottom[index])
-			if(ballIndex > -1) {
+			if (ballIndex > -1) {
 				this.balls.splice(ballIndex, 1)
 			}
 		}
@@ -183,25 +197,25 @@ Game.prototype.applyPower = function (powerType) {
 	}
 		break
 	case this.powerTypes.increaseBallSize: {
-		for(let index = 0; index < this.balls.length; index++) {
+		for (let index = 0; index < this.balls.length; index++) {
 			this.balls[index].increaseSize()
 		}
 	}
 		break
 	case this.powerTypes.decreaseBallSize: {
-		for(let index = 0; index < this.balls.length; index++) {
+		for (let index = 0; index < this.balls.length; index++) {
 			this.balls[index].decreaseSize()
 		}
 	}
 		break
 	case this.powerTypes.speedUpBall: {
-		for(let index = 0; index < this.balls.length; index++) {
+		for (let index = 0; index < this.balls.length; index++) {
 			this.balls[index].increaseSpeed()
 		}
 	}
 		break
 	case this.powerTypes.slowDownBall: {
-		for(let index = 0; index < this.balls.length; index++) {
+		for (let index = 0; index < this.balls.length; index++) {
 			this.balls[index].decreaseSpeed()
 		}
 	}
@@ -217,8 +231,9 @@ Game.prototype.applyPower = function (powerType) {
 Game.prototype.moveToNextStage = function () {
 
 	this.currentPower = undefined
+	this.soundMgr.stop(stageDatas[this.currentStage].soundId)
 
-	if(this.lastBrickTimer) {
+	if (this.lastBrickTimer) {
 		this.lastBrickTimer.stop()
 		this.lastBrickTimer = undefined
 	}
@@ -235,28 +250,29 @@ Game.prototype.moveToNextStage = function () {
 	}
 }
 
-Game.prototype.startLastBrickTimer = function () {
-	if(this.lastBrickTimer) {
+Game.prototype.handleLastBrickRemaining = function () {
+	if (this.lastBrickTimer) {
 		// already present, no need to start
 		return
 	}
 
+	this.soundMgr.stop(stageDatas[this.currentStage].soundId)
 	this.lastBrickTimer = new Timer(59)
 	var self = this
-	this.lastBrickTimer.on("end", function() {
+	this.lastBrickTimer.on("end", function () {
 		self.lastBrickTimer = undefined
 		self.moveToNextStage()
 	})
 }
 
-Game.prototype.roundRobinPowerProvider = function() {
+Game.prototype.roundRobinPowerProvider = function () {
 	var nextPower = this.powerTypes.increaseLife
 	var totalPowerCount = Object.keys(this.powerTypes).length
 
-	return function() {
+	return function () {
 		var curPowerToReturn = nextPower
 		nextPower = (nextPower + 1)
-		if(nextPower > totalPowerCount) {
+		if (nextPower > totalPowerCount) {
 			nextPower = 1
 		}
 		return curPowerToReturn
@@ -271,12 +287,13 @@ Game.prototype.lastBallDroppedToBottom = function () {
 	this.lifeCount--
 
 	// Reset ball angles
-	for(let index = 0; index < this.balls.length; index++) {
+	for (let index = 0; index < this.balls.length; index++) {
 		this.balls[index].initialAngleSpeedSetup()
 	}
 
 	if (this.lifeCount == 0) {
 		this.curState = this.state.no_more_life
+		this.soundMgr.stop(stageDatas[this.currentStage].soundId)
 		if (this.callbacks["no_more_life"]) {
 			this.callbacks["no_more_life"](this.stage.score)
 		}
@@ -383,8 +400,8 @@ Game.prototype.drawGameOver = function () {
 	this.ctx.drawImage(gameOverImage, imageX, 50)
 }
 
-Game.prototype.drawLastBrickRemainingTime = function() {
-	if(this.lastBrickTimer) {
+Game.prototype.drawLastBrickRemainingTime = function () {
+	if (this.lastBrickTimer) {
 		this.ctx.fillStyle = "#FF0000"
 		this.ctx.font = "40px Comic Sans MS"
 		this.ctx.textBaseline = "center"
@@ -394,8 +411,8 @@ Game.prototype.drawLastBrickRemainingTime = function() {
 }
 
 Game.prototype.increaseLife = function () {
-	var maxLife = 5	// So far it's here, no one other required it. If required place it in a suitable place
-	if(this.lifeCount < maxLife) {
+	var maxLife = 5 // So far it's here, no one other required it. If required place it in a suitable place
+	if (this.lifeCount < maxLife) {
 		this.lifeCount++
 	}
 }

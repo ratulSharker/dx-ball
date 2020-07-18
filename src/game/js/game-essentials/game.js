@@ -1,4 +1,4 @@
-/* global Bat Ball stageDatas Stage Power Timer Sound */
+/* global Bat Ball stageDatas Stage Power Sound LastBrickCrackingHandler*/
 
 function Game(windowWidth, windowHeight, canvas) {
 	this.windowWidth = windowWidth
@@ -33,7 +33,7 @@ function Game(windowWidth, windowHeight, canvas) {
 
 	}
 
-	this.lifeCount = 3
+	this.lifeCount = 2
 
 	// bat setup
 	this.bat = new Bat(windowWidth, windowHeight)
@@ -93,15 +93,18 @@ Game.prototype.initialStageSetup = function(windowWidth, windowHeight) {
 	this.stage.on("end", function () {
 		self.moveToNextStage()
 	})
-	this.lastBrickTimer = undefined
-	this.stage.on("last_brick", function () {
-		self.handleLastBrickRemaining()
+	this.lastBrickCrackingHandler = undefined
+	this.stage.on("last_brick", function (lastBrickRect) {
+		self.handleLastBrickRemaining(lastBrickRect)
 	})
 }
 
 Game.prototype.startGame = function () {
 	this.curState = this.state.running
-	this.soundMgr.playInLoop(stageDatas[this.currentStage].soundId)
+
+	if(!this.lastBrickCrackingHandler && stageDatas.length > this.currentStage && this.lifeCount > 0) {
+		this.soundMgr.playInLoop(stageDatas[this.currentStage].soundId)
+	}
 }
 
 Game.prototype.operateBall = function () {
@@ -233,9 +236,9 @@ Game.prototype.moveToNextStage = function () {
 	this.currentPower = undefined
 	this.soundMgr.stop(stageDatas[this.currentStage].soundId)
 
-	if (this.lastBrickTimer) {
-		this.lastBrickTimer.stop()
-		this.lastBrickTimer = undefined
+	if(this.lastBrickCrackingHandler) {
+		this.lastBrickCrackingHandler.handleStagePassed()
+		this.lastBrickCrackingHandler = undefined
 	}
 
 	if (this.currentStage < stageDatas.length - 1) {
@@ -250,19 +253,19 @@ Game.prototype.moveToNextStage = function () {
 	}
 }
 
-Game.prototype.handleLastBrickRemaining = function () {
-	if (this.lastBrickTimer) {
-		// already present, no need to start
-		return
+Game.prototype.handleLastBrickRemaining = function (lastBrickRect) {
+	if (!this.lastBrickCrackingHandler && this.curState == this.state.running) {
+		this.soundMgr.stop(stageDatas[this.currentStage].soundId)
+		console.log("handle last brick remaining called")
+		this.lastBrickCrackingHandler = new LastBrickCrackingHandler(30, this.soundMgr, lastBrickRect)
+		var self = this
+		this.lastBrickCrackingHandler.on("end", function() {
+			self.lastBrickCrackingHandler = undefined
+			self.moveToNextStage()
+		})
 	}
 
-	this.soundMgr.stop(stageDatas[this.currentStage].soundId)
-	this.lastBrickTimer = new Timer(59)
-	var self = this
-	this.lastBrickTimer.on("end", function () {
-		self.lastBrickTimer = undefined
-		self.moveToNextStage()
-	})
+
 }
 
 Game.prototype.roundRobinPowerProvider = function () {
@@ -296,6 +299,10 @@ Game.prototype.lastBallDroppedToBottom = function () {
 		this.soundMgr.stop(stageDatas[this.currentStage].soundId)
 		if (this.callbacks["no_more_life"]) {
 			this.callbacks["no_more_life"](this.stage.score)
+		}
+		if(this.lastBrickCrackingHandler) {
+			this.lastBrickCrackingHandler.handleStagePassed()
+			this.lastBrickCrackingHandler = undefined
 		}
 	}
 }
@@ -351,6 +358,11 @@ Game.prototype.draw = function () {
 			this.balls[index].draw(this.ctx)
 		}
 
+		// thunder drawing
+		if(this.lastBrickCrackingHandler) {
+			this.lastBrickCrackingHandler.draw(this.ctx)
+		}
+
 		// last brick remaining time
 		this.drawLastBrickRemainingTime()
 	}
@@ -401,12 +413,12 @@ Game.prototype.drawGameOver = function () {
 }
 
 Game.prototype.drawLastBrickRemainingTime = function () {
-	if (this.lastBrickTimer) {
+	if (this.lastBrickCrackingHandler) {
 		this.ctx.fillStyle = "#FF0000"
 		this.ctx.font = "40px Comic Sans MS"
 		this.ctx.textBaseline = "center"
 		this.ctx.textAlign = "center"
-		this.ctx.fillText(`${this.lastBrickTimer.remainingSeconds()}`, this.windowWidth / 2, this.windowHeight / 2)
+		this.ctx.fillText(`${this.lastBrickCrackingHandler.remainingSeconds()}`, this.windowWidth / 2, this.windowHeight / 2)
 	}
 }
 

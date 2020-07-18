@@ -16,8 +16,8 @@ Sound.prototype.play = function (audioId, volume = 1.0) {
 }
 
 
-Sound.prototype.playInLoop = function(audioId) {
-	var audio = this.play(audioId)
+Sound.prototype.playInLoop = function(audioId, volume) {
+	var audio = this.play(audioId, volume)
 	audio.loop = true
 	return audio
 }
@@ -28,6 +28,11 @@ Sound.prototype.stop = function(audioId) {
 	audio.pause()
 	audio.currentTime = 0
 	this.audio
+}
+
+Sound.prototype.volume = function(audioId, volume) {
+	var audio = this.getAudioById(audioId)
+	audio.volume = volume
 }
 
 

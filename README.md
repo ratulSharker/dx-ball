@@ -44,6 +44,7 @@ There are several [MDN Guideline](https://developer.mozilla.org/en-US/docs/Web/A
 - [ ] Separate canvas for top score-stage_name-life. Update only while they updates.
 - [x] Separate canvas for stage drawing. Update only while brick ball collide or stage updates.
 - [x] Resizing images to size which they are drawn.
+- [ ] Instead of clearing whole screen, only update the portion where the ball or power last time was present.
 
 Apart from these performance improvement, some more work can be done
 

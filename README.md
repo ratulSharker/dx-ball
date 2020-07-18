@@ -42,7 +42,7 @@ There are several [MDN Guideline](https://developer.mozilla.org/en-US/docs/Web/A
 - [x] Disable canvas transperancy.
 - [x] Separate canvas for Bat. Update only while mouse moved.
 - [ ] Separate canvas for top score-stage_name-life. Update only while they updates.
-- [ ] Separate canvas for stage drawing. Update only while brick ball collide or stage updates.
+- [x] Separate canvas for stage drawing. Update only while brick ball collide or stage updates.
 - [ ] Resizing images to size which they are drawn.
 
 Apart from these performance improvement, some more work can be done

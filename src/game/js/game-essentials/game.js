@@ -4,7 +4,9 @@ function Game(windowWidth, windowHeight, canvas) {
 	this.windowWidth = windowWidth
 	this.windowHeight = windowHeight
 
-	this.ctx = canvas.getContext("2d")
+	this.ctx = canvas.getContext("2d", {
+		alpha : false
+	})
 	this.ctx.canvas.width = windowWidth
 	this.ctx.canvas.height = windowHeight
 
@@ -324,7 +326,8 @@ Game.prototype.on = function (event, callback) {
 Game.prototype.draw = function () {
 
 	// clear screen
-	this.ctx.clearRect(0, 0, this.windowWidth, this.windowHeight)
+	this.ctx.fillStyle = "#000000"
+	this.ctx.fillRect(0, 0, this.windowWidth, this.windowHeight)
 
 	if (this.curState == this.state.no_more_stages || this.curState == this.state.no_more_life) {
 		this.drawGameOver()

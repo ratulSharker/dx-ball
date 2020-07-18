@@ -26,10 +26,11 @@
     <script type="text/javascript" src="./js/gameplay.js"></script>
 </head>
 
-<body>
-    <canvas style="background-color: black;" id="canvas" width="600px" , height="400px"></canvas>
-    <canvas id="bat_canvas" width="600px" , height="400px"></canvas>
-    <canvas id="stage_canvas" width="600px" , height="400px"></canvas>
+<body style="background-color: black;">
+    <canvas style="z-index: 1; position: absolute;" id="stage_canvas" width="600px" height="400px"></canvas>
+    <canvas style="z-index: 2; position: absolute;" id="canvas" width="600px" height="400px"></canvas>
+    <canvas style="z-index: 3; position: absolute;" id="bat_canvas" width="600px" height="400px"></canvas>
+
 
     <img src="./images/heart.png" style="display: none;" id="heart_image" alt="">
     <img src="./images/game_over.png" style="display: none;" id="game_over_image" alt="">

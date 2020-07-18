@@ -4,11 +4,12 @@ function Game(windowWidth, windowHeight, canvas, batCanvas, stageCanvas) {
 	this.windowWidth = windowWidth
 	this.windowHeight = windowHeight
 
-	this.ctx = canvas.getContext("2d", {
-		alpha : false
-	})
+	this.ctx = canvas.getContext("2d")
 	this.ctx.canvas.width = windowWidth
 	this.ctx.canvas.height = windowHeight
+	this.ctx.canvas.style.left = "0px"
+	this.ctx.canvas.style.top = "0px"
+	this.ctx.canvas.style.position = "absolute"
 
 
 	this.state = {
@@ -331,8 +332,9 @@ Game.prototype.on = function (event, callback) {
 Game.prototype.draw = function () {
 
 	// clear screen
-	this.ctx.fillStyle = "#000000"
-	this.ctx.fillRect(0, 0, this.windowWidth, this.windowHeight)
+	// this.ctx.fillStyle = "#000000"
+	// this.ctx.fillRect(0, 0, this.windowWidth, this.windowHeight)
+	this.ctx.clearRect(0, 0, this.windowWidth, this.windowHeight)
 
 	if (this.curState == this.state.no_more_stages || this.curState == this.state.no_more_life) {
 		this.drawGameOver()

@@ -15,12 +15,14 @@ function Stage(windowWidth, windowHeight, stageData, canvas) {
 
 	this.score = 0
 
-	this.ctx = canvas.getContext("2d")
+	this.ctx = canvas.getContext("2d", {
+		alpha: false
+	})
 	this.ctx.canvas.width = windowWidth
 	this.ctx.canvas.height = windowHeight
-	this.ctx.canvas.style.position = "absolute"
 	this.ctx.canvas.style.left = "0px"
 	this.ctx.canvas.style.top = "0px"
+	this.ctx.canvas.style.position = "absolute"
 
 	this.draw()
 }
@@ -37,8 +39,6 @@ Stage.prototype.windowResized = function (windowWidth, windowHeight) {
 
 Stage.prototype.draw = function () {
 
-	// this.ctx.fillStyle = "#FF00FF"
-	// this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
 	this.clearDrawing()
 
 	const self = this
@@ -66,7 +66,9 @@ Stage.prototype.draw = function () {
 }
 
 Stage.prototype.clearDrawing = function() {
-	this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
+	// this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
+	this.ctx.fillStyle = "#000000"
+	this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
 }
 
 // It will return next ball hit direction

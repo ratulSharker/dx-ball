@@ -5,7 +5,7 @@ $(document).ready(function () {
 	isTokenNotFoundMoveToIndex()
 
 	// setup gameplay
-	var game = new Game(window.innerWidth, window.innerHeight, $("#canvas")[0], $("#bat_canvas")[0])
+	var game = new Game(window.innerWidth, window.innerHeight, $("#canvas")[0], $("#bat_canvas")[0], $("#stage_canvas")[0])
 	const fps = 60
 	var intervalId = setInterval(gameloop, 1000 / fps)
 	var api = new Api()
@@ -20,11 +20,11 @@ $(document).ready(function () {
 		game.windowResized(window.innerWidth, window.innerHeight)
 	})
 
-	$("#canvas").mousemove(function (event) {
+	$("body").mousemove(function (event) {
 		game.mouseMoved(event.clientX)
 	})
 
-	$("#canvas").mouseup(function () {
+	$("body").mouseup(function () {
 		game.startGame()
 	})
 

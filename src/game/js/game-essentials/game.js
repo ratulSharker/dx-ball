@@ -1,14 +1,15 @@
 /* global Bat Ball stageDatas Stage Power Sound LastBrickCrackingHandler*/
 
-function Game(windowWidth, windowHeight, canvas, batCanvas) {
+function Game(windowWidth, windowHeight, canvas, batCanvas, stageCanvas) {
 	this.windowWidth = windowWidth
 	this.windowHeight = windowHeight
 
-	this.ctx = canvas.getContext("2d", {
-		alpha : false
-	})
+	this.ctx = canvas.getContext("2d")
 	this.ctx.canvas.width = windowWidth
 	this.ctx.canvas.height = windowHeight
+	this.ctx.canvas.style.left = "0px"
+	this.ctx.canvas.style.top = "0px"
+	this.ctx.canvas.style.position = "absolute"
 
 
 	this.state = {
@@ -53,7 +54,7 @@ function Game(windowWidth, windowHeight, canvas, batCanvas) {
 	this.soundMgr = new Sound()
 
 	// stage setup
-	this.initialStageSetup(windowWidth, windowHeight)
+	this.initialStageSetup(windowWidth, windowHeight, stageCanvas)
 }
 
 Game.prototype.windowResized = function (windowWidth, windowHeight) {
@@ -87,9 +88,9 @@ Game.prototype.mouseMoved = function (cursorX) {
 	this.bat.mouseMoved(cursorX)
 }
 
-Game.prototype.initialStageSetup = function(windowWidth, windowHeight) {
+Game.prototype.initialStageSetup = function(windowWidth, windowHeight, stageCanvas) {
 	this.currentStage = 0
-	this.stage = new Stage(windowWidth, windowHeight, stageDatas[this.currentStage])
+	this.stage = new Stage(windowWidth, windowHeight, stageDatas[this.currentStage], stageCanvas)
 	var self = this
 	this.stage.on("end", function () {
 		self.moveToNextStage()
@@ -144,6 +145,7 @@ Game.prototype.operateBall = function () {
 				this.soundMgr.stopBallBounce()
 				this.soundMgr.playBallBounce()
 				this.handlePowerGeneration(this.balls[index])
+				this.stage.draw()
 			}
 			this.balls[index].handleBrickCollisionResult(brickCollisionResult)
 
@@ -248,11 +250,13 @@ Game.prototype.moveToNextStage = function () {
 		this.currentStage++
 		this.curState = this.state.waiting
 		this.stage.setNewStageData(stageDatas[this.currentStage])
+		this.stage.draw()
 	} else {
 		this.curState = this.state.no_more_stages
 		if (this.callbacks["all_stage_finished"]) {
 			this.callbacks["all_stage_finished"](this.stage.score)
 		}
+		this.stage.clearDrawing()
 	}
 }
 
@@ -302,6 +306,7 @@ Game.prototype.lastBallDroppedToBottom = function () {
 		this.soundMgr.stop(stageDatas[this.currentStage].soundId)
 		if (this.callbacks["no_more_life"]) {
 			this.callbacks["no_more_life"](this.stage.score)
+			this.stage.clearDrawing()
 		}
 		if(this.lastBrickCrackingHandler) {
 			this.lastBrickCrackingHandler.handleStagePassed()
@@ -327,8 +332,9 @@ Game.prototype.on = function (event, callback) {
 Game.prototype.draw = function () {
 
 	// clear screen
-	this.ctx.fillStyle = "#000000"
-	this.ctx.fillRect(0, 0, this.windowWidth, this.windowHeight)
+	// this.ctx.fillStyle = "#000000"
+	// this.ctx.fillRect(0, 0, this.windowWidth, this.windowHeight)
+	this.ctx.clearRect(0, 0, this.windowWidth, this.windowHeight)
 
 	if (this.curState == this.state.no_more_stages || this.curState == this.state.no_more_life) {
 		this.drawGameOver()
@@ -347,7 +353,7 @@ Game.prototype.draw = function () {
 
 
 		// stage drawing
-		this.stage.draw(this.ctx)
+		// this.stage.draw(this.ctx)
 
 		// power drawing
 		if (this.currentPower) {

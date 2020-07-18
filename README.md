@@ -44,3 +44,15 @@ There are several [MDN Guideline](https://developer.mozilla.org/en-US/docs/Web/A
 - [ ] Separate canvas for top score-stage_name-life. Update only while they updates.
 - [ ] Separate canvas for stage drawing. Update only while brick ball collide or stage updates.
 - [ ] Resizing images to size which they are drawn.
+
+Apart from these performance improvement, some more work can be done
+
+- [ ] Do form validation in `index.html` page.
+- [ ] Show nicer toast instead of showing `window.alert('msg')`.
+- [ ] Introduce inter-ball collision
+- [ ] Introduce more power like shooting capabilities, fireball (blasting few neighbouring blocks), invincible ball (do not bounce back from bricks) etc.
+- [ ] Store stages in the server. Serve stages via api.
+- [ ] Prepare an UI for making more stages.
+- [ ] Put a screen of available stages.
+- [ ] Ability to pause in the middle of game & quit from game.
+- [ ] Ability to control SFX and Gameplay volume.

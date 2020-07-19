@@ -2,6 +2,10 @@
 
 This is a simple clone of dx-ball arcade game.
 
+## Gameplay
+
+[<img src="./screenshots/gameplay_screenshot_1.png" alt="Watch on youtube" width="400"/>](https://www.youtube.com/watch?v=bP4f78ZB80g)
+
 ## Installation
 
 Clone the repository

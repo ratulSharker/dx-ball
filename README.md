@@ -45,6 +45,9 @@ There are several [MDN Guideline](https://developer.mozilla.org/en-US/docs/Web/A
 - [x] Separate canvas for stage drawing. Update only while brick ball collide or stage updates.
 - [x] Resizing images to size which they are drawn.
 - [ ] Instead of clearing whole screen, only update the portion where the ball or power last time was present.
+- [ ] Calculate collision and movement related tasks in a separate web worker, keep runloop only for rendering.
+- [ ] Experimenting with `window.requestAnimationFrame`.
+- [ ] Stage brick collision with ball can be more optimized by pre-considering ball inside the brick's bounding area or not.
 
 Apart from these performance improvement, some more work can be done
 

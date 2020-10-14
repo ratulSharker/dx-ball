@@ -14,14 +14,23 @@ Clone the repository
 git clone https://github.com/ratulSharker/dx-ball.git
 ```
 
+## Run
+
+### Run in docker
+
+```bash
+cd dx-ball
+docker-compose up
+```
+
+### Run manually
+
 Install the depdendency
 
 ```bash
 cd dx-ball
 npm install
 ```
-
-## Run
 
 Run the project
 
@@ -55,6 +64,7 @@ There are several [MDN Guideline](https://developer.mozilla.org/en-US/docs/Web/A
 
 Apart from these performance improvement, some more work can be done
 
+- [x] Dockerize the whole application.
 - [ ] Do form validation in `index.html` page.
 - [ ] Show nicer toast instead of showing `window.alert('msg')`.
 - [ ] Introduce inter-ball collision

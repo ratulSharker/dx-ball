@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon -r dotenv/config src/server.js dotenv_config_path=config.env  --exec 'npm run lint && node'",
     "lint": "node ./node_modules/eslint/bin/eslint.js --fix --ignore-path .gitignore .",
-    "start" : "nodemon -r dotenv/config src/server.js dotenv_config_path=config.env"
+    "start": "nodemon -r dotenv/config src/server.js dotenv_config_path=config.env"
   },
   "repository": {
     "type": "git",
@@ -31,8 +31,8 @@
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.2.1",
     "morgan": "^1.10.0",
-    "sequelize": "^6.3.3",
-    "sqlite3": "^5.0.0"
+    "sequelize": "^6.11.0",
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",

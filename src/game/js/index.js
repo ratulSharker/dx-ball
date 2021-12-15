@@ -1,14 +1,14 @@
 /* global $ Api */
-$(document).ready(function () {
+$(function () {
 
 	// Initial setup
 	showHideRegisterPlay()
-	$("#login-btn").click(handleLogin)
-	$("#register-btn").click(handleRegister)
-	$("#reset-password-btn").click(handleResetPassword)
-	$("#play-btn").click(gameplayTapped)
-	$("#hall-of-fame-btn").click(hallOfFameTapped)
-	$("#logout-btn").click(handleLogout)
+	$("#login-btn").on("click", handleLogin)
+	$("#register-btn").on("click", handleRegister)
+	$("#reset-password-btn").on("click", handleResetPassword)
+	$("#play-btn").on("click", gameplayTapped)
+	$("#hall-of-fame-btn").on("click", hallOfFameTapped)
+	$("#logout-btn").on("click", handleLogout)
 	var api = new Api()
 
 	// Event handler

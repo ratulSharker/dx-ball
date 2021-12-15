@@ -1,7 +1,7 @@
 /* global $ Game Api */
 
 
-$(document).ready(function () {
+$(function () {
 	isTokenNotFoundMoveToIndex()
 
 	// setup gameplay
@@ -16,19 +16,19 @@ $(document).ready(function () {
 		game.draw()
 	}
 
-	$(window).resize(function () {
+	$(window).on("resize", function () {
 		game.windowResized(window.innerWidth, window.innerHeight)
 	})
 
-	$("body").mousemove(function (event) {
+	$("body").on("mousemove", function (event) {
 		game.mouseMoved(event.clientX)
 	})
 
-	$("body").mouseup(function () {
+	$("body").on("mouseup", function () {
 		game.startGame()
 	})
 
-	$("#main_menu_btn").click(function () {
+	$("#main_menu_btn").on("click", function () {
 		window.location = "/index.html"
 	})
 

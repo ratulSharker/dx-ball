@@ -3,72 +3,42 @@
 
 <head>
     <title>DX-BALL</title>
-    <link rel='stylesheet' href='/lib/css/bootstrap.min.css' />
-    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/index.css">
+    <link rel='stylesheet' href='./lib/bootstrap/css/bootstrap.min.css' />
+    <script type="text/javascript" src="./lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./css/index.css">
 
-    <script type="text/javascript" src="js/api.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="./js/api.js"></script>
+    <script type="text/javascript" src="./js/index.js"></script>
 </head>
 
 <body>
     <!-- Background image -->
     <img src="./images/intro_background.gif" class="centered">
 
-
-    <!-- Register - login - forgot password -->
-    <div id="register-grp" class="d-none">
-        <div class="d-flex  align-items-center flex-column centered button-group">
-            <div class="p-2">
-                <button type="button" class="btn btn-outline-primary d-block" data-toggle="modal"
-                    data-target="#registerModal">
-                    Register
-                </button>
-            </div>
-            <div class="p-2">
-                <button type="button" class="btn btn-outline-success d-block mt-3" data-toggle="modal"
-                    data-target="#loginModal">
-                    Login
-                </button>
-            </div>
-            <div class="p-2">
-                <button type="button" class="btn btn-outline-secondary d-block mt-3" data-toggle="modal"
-                    data-target="#forgotModal">
-                    Forgot password
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Play button -->
-    <div id="play-grp" class="d-none">
+    <div id="play-grp">
         <div class="d-flex align-items-center flex-column centered button-group">
             <div class="p-2">
-                <button type="button" class="btn btn-outline-success d-block" id="play-btn">
+                <a role="button" class="btn btn-outline-success" href="./gameplay.html">
                     Play
-                </button>
+                </a>
             </div>
 
             <div class="p-2">
-                <button type="button" class="btn btn-outline-warning d-block" data-toggle="modal"
+                <button type="button" class="btn btn-outline-warning" data-toggle="modal"
                     data-target="#powerLegendModal">
                     Power Legend
                 </button>
             </div>
 
             <div class="p-2">
-                <button type="button" class="btn btn-outline-primary d-block" id="hall-of-fame-btn" data-toggle="modal"
+                <button type="button" class="btn btn-outline-primary" id="hall-of-fame-btn" data-toggle="modal"
                     data-target="#hallOfFameModal">
                     Hall of fame
                 </button>
             </div>
 
-            <div class="p-2">
-                <button type="button" class="btn btn-outline-danger d-block" id="logout-btn">
-                    Logout
-                </button>
-            </div>
         </div>
     </div>
 

@@ -1,8 +1,0 @@
-version: '2'
-services:
-    dx-ball:
-        build: .
-        image: dx-ball
-        ports:
-            - 8000:8000
-        container_name: dx-ball

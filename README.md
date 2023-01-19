@@ -1,54 +1,24 @@
 # DX-Ball
 
-This is a simple clone of dx-ball arcade game.
+This is a simple web based clone of dx-ball arcade game.
 
-## Gameplay
+## Gameplay 🎥
 
 [<img src="./screenshots/gameplay_screenshot_1.png" alt="Watch on youtube" width="400"/>](https://www.youtube.com/watch?v=bP4f78ZB80g)
 
-## Installation
+## Play It 🎮
+[Click to play 🕹](https://ratulsharker.github.io/dx-ball/)
 
-Clone the repository
+## Server Version 🖥
 
-```bash
-git clone https://github.com/ratulSharker/dx-ball.git
-```
+There is a nodejs application along with followings ([Can be access in master branch](https://github.com/ratulSharker/dx-ball/tree/master))
 
-## Run
+ - API Server.
+ - Authentication.
+ - Score Management.
+ - Fully containerized.
 
-### Run in docker
-
-```bash
-cd dx-ball
-docker-compose up
-```
-
-### Run manually
-
-Install the depdendency
-
-```bash
-cd dx-ball
-npm install
-```
-
-Run the project
-
-```bash
-npm start
-```
-
-Access in browser http://localhost:8000
-
-## Development
-
-This project uses `nodemon` & `eslint` in development mode. To run in development mode
-
-```bash
-npm run dev
-```
-
-## Further Improvement
+## Further Improvement 🧑‍💻
 
 There are several [MDN Guideline](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas), read and improve performance. Following is a small list which can improve performance.
 
@@ -60,17 +30,27 @@ There are several [MDN Guideline](https://developer.mozilla.org/en-US/docs/Web/A
 - [ ] Instead of clearing whole screen, only update the portion where the ball or power last time was present.
 - [ ] Calculate collision and movement related tasks in a separate web worker, keep runloop only for rendering.
 - [ ] Experimenting with `window.requestAnimationFrame`.
-- [ ] Stage brick collision with ball can be more optimized by pre-considering ball inside the brick's bounding area or not.
-
-Apart from these performance improvement, some more work can be done
-
-- [x] Dockerize the whole application.
-- [ ] Do form validation in `index.html` page.
+- [ ] Optimize stage brick collision by considering is the ball inside the stage area or not.
 - [ ] Show nicer toast instead of showing `window.alert('msg')`.
-- [ ] Introduce inter-ball collision
-- [ ] Introduce more power like shooting capabilities, fireball (blasting few neighbouring blocks), invincible ball (do not bounce back from bricks) etc.
-- [ ] Store stages in the server. Serve stages via api.
-- [ ] Prepare an UI for making more stages.
+- [ ] Introduce inter-ball collision.
+- [ ] Introduce more power like following:
+  - [ ] Shooting capabilities.
+  - [ ] Fireball (blasting few neighbouring blocks).
+  - [ ] Invincible ball (do not bounce back from bricks).
+  - [ ] Introduce more that two ball.
 - [ ] Put a screen of available stages.
 - [ ] Ability to pause in the middle of game & quit from game.
 - [ ] Ability to control SFX and Gameplay volume.
+- [ ] Pacakge the whole js, css using a bundler.
+- [ ] Introduce aspect ratio of gameplay screen.
+- [ ] After gameplay:
+  - [ ] Prompt user for name (In local storage)
+  - [ ] Store the score with given name.
+  - [ ] Show the hall of fame according to that.
+- [ ] Hide the mouse cursor while playing the game.
+- [ ] Introduce more natural fun stages.
+- [ ] Show a nice loader, while the whole game is being loading.
+- [ ] Show a intuitive messages.
+  - [ ] Left click to start the game.
+  - [ ] Right click to pause the game.
+- [ ] Think of an idea, how mobile user will play this game.

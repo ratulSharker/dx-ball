@@ -7,6 +7,10 @@ ScoreManager.prototype.getStorageKey = function() {
 	return "score";
 }
 
+ScoreManager.prototype.maxNumberOfScoreToScore = function() {
+	return 5;
+}
+
 ScoreManager.prototype.getAllScores = function() {
 	const storageKey = this.getStorageKey();
 	let storedValue = localStorage.getItem(storageKey);
@@ -29,5 +33,12 @@ ScoreManager.prototype.addScore = function(username, score) {
 		username: username,
 		score: score
 	});
+
+	scores.sort(function(first, second) {
+		return second.score - first.score;
+	});
+
+	scores = scores.slice(0, Math.min(scores.length, this.maxNumberOfScoreToScore()));
+ 
 	this.saveAllScores(scores);
 }

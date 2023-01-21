@@ -36,6 +36,7 @@ $(document).ready(function () {
 
 	function updateScore(score) {
 		$("#score").val(score);
+		$("#label-for-username").text(`You scored ${score} on the last game. State your name to store the score.`);
 		$("#usernamePromptModal").modal("show");
 	}
 

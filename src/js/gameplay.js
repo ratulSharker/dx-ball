@@ -22,31 +22,31 @@ $(document).ready(function () {
 		game.startGame()
 	});
 
-	game.on("all_stage_finished", function (score) {
+	game.on("all_stage_finished", gameCompletedEitherAllStageCompletedOrNoMoreLife)
+
+	game.on("no_more_life", gameCompletedEitherAllStageCompletedOrNoMoreLife)
+
+	function gameCompletedEitherAllStageCompletedOrNoMoreLife(score) {
+		// TODO: Why need this inside of a `setTimeout` ?
 		setTimeout(function () {
 			clearInterval(intervalId)
 			updateScore(score)
-			$("#main_menu_btn").show().removeClass("d-none")
 		}, 500)
-
-		// Alternate interesting implementation,
-		// clearInterval(intervalId)
-		// setTimeout(function () {
-		// 	game.draw()
-		// 	updateScore(score)
-		// 	$("#main_menu_btn").show().removeClass("d-none")
-		// }, 1000)
-	})
-
-	game.on("no_more_life", function (score) {
-		setTimeout(function () {
-			clearInterval(intervalId)
-			updateScore(score)
-			$("#main_menu_btn").show().removeClass("d-none")
-		}, 500)
-	})
+	}
 
 	function updateScore(score) {
-		console.log("Setting score development in progress...");
+		$("#score").val(score);
+		$("#usernamePromptModal").modal("show");
 	}
+
+	$("#usernamePromptModal").on("hidden.bs.modal", function() {
+		let username = $("#username").val() || "No Name";
+		let score = $("#score").val();
+
+		let scoreMgr = new ScoreManager();
+		scoreMgr.addScore(username, score);
+
+		$("#main_menu_btn").removeClass("d-none");
+	});
+
 })

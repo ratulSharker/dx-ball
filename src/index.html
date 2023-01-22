@@ -8,6 +8,7 @@
     <script type="text/javascript" src="./lib/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="./css/index.css">
 
+	<script type="text/javascript" src="./js/game-essentials/score_manager.js"></script>
     <script type="text/javascript" src="./js/index.js"></script>
 </head>
 
@@ -32,8 +33,7 @@
             </div>
 
             <div class="p-2">
-                <button type="button" class="btn btn-outline-primary" id="hall-of-fame-btn" data-toggle="modal"
-                    data-target="#hallOfFameModal">
+                <button type="button" class="btn btn-outline-primary" id="hall-of-fame-btn">
                     Hall of fame
                 </button>
             </div>
@@ -161,7 +161,6 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Score</th>
-                                <th>Scored At</th>
                             </tr>
                         </thead>
                         <tbody id="hall-of-fame-tbody">

@@ -43,10 +43,10 @@ There are several [MDN Guideline](https://developer.mozilla.org/en-US/docs/Web/A
 - [ ] Ability to control SFX and Gameplay volume.
 - [ ] Pacakge the whole js, css using a bundler.
 - [ ] Introduce aspect ratio of gameplay screen.
-- [ ] After gameplay:
-  - [ ] Prompt user for name (In local storage)
-  - [ ] Store the score with given name.
-  - [ ] Show the hall of fame according to that.
+- [x] After gameplay:
+  - [x] Prompt user for name (In local storage)
+  - [x] Store the score with given name.
+  - [x] Show the hall of fame according to that.
 - [ ] Hide the mouse cursor while playing the game.
 - [ ] Introduce more natural fun stages.
 - [ ] Show a nice loader, while the whole game is being loading.

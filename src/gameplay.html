@@ -21,6 +21,7 @@
     <script type="text/javascript" src="./js/game-essentials/ball.js"></script>
     <script type="text/javascript" src="./js/game-essentials/power.js"></script>
     <script type="text/javascript" src="./js/game-essentials/game.js"></script>
+	<script type="text/javascript" src="./js/game-essentials/score_manager.js"></script>
     <script type="text/javascript" src="./js/gameplay.js"></script>
 </head>
 
@@ -51,7 +52,33 @@
 
 
     <a class="btn btn-outline-success centered d-none" style="z-index: 4" id="main_menu_btn" href="./index.html">Main Menu</a>
-
+	
+	<!-- Prompt for username for score setting -->
+	<div class="modal fade" id="usernamePromptModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalLabel">Save your score</h5>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-12">
+							<label id="label-for-username" for="username">You scored 5 on the last game. State your name to store the score.</label>
+						</div>
+						<div class="col-12">
+							<input type="hidden" id="score">
+							<input type="text" id="username" placeholder="Your name" class="form-control">
+						</div>
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Save Score</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 

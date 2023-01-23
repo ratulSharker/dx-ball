@@ -7,39 +7,61 @@
     <script type="text/javascript" src="./lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="./lib/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="./css/index.css">
+	<link rel='stylesheet' href='./css/gameplay.css' />
 
+	<script type="text/javascript" src="./js/game-essentials/score_manager.js"></script>
+	<script type="text/javascript" src="./js/game-essentials/thunder.js"></script>    
+    <script type="text/javascript" src="./js/game-essentials/last_brick_cracking_handler.js"></script>
+    <script type="text/javascript" src="./js/game-essentials/interpolator.js"></script>
+    <script type="text/javascript" src="./js/game-essentials/sound.js"></script>
+    <script type="text/javascript" src="./js/game-essentials/timer.js"></script>
+    <script type="text/javascript" src="./js/game-essentials/stage-data.js"></script>
+    <script type="text/javascript" src="./js/game-essentials/stage.js"></script>
+    <script type="text/javascript" src="./js/game-essentials/bat.js"></script>
+    <script type="text/javascript" src="./js/game-essentials/ball.js"></script>
+    <script type="text/javascript" src="./js/game-essentials/power.js"></script>
+    <script type="text/javascript" src="./js/game-essentials/game.js"></script>
 	<script type="text/javascript" src="./js/game-essentials/score_manager.js"></script>
     <script type="text/javascript" src="./js/index.js"></script>
 </head>
 
 <body>
-    <!-- Background image -->
-    <img src="./images/intro_background.gif" class="centered">
+    <div id="main-menu">
+		<!-- Background image -->
+		<img src="./images/intro_background.gif" class="centered">
 
-    <!-- Play button -->
-    <div id="play-grp">
-        <div class="d-flex align-items-center flex-column centered button-group">
-            <div class="p-2">
-                <a role="button" class="btn btn-outline-success" href="./gameplay.html">
-                    Play
-                </a>
-            </div>
+		<!-- Play button -->
+		<div id="play-grp">
+			<div class="d-flex align-items-center flex-column centered button-group">
+				<div class="p-2">
+					<button id="play-button" type="button" class="btn btn-outline-success" >
+						Play
+					</button>
+				</div>
+	
+				<div class="p-2">
+					<button type="button" class="btn btn-outline-warning" data-toggle="modal"
+						data-target="#powerLegendModal">
+						Power Legend
+					</button>
+				</div>
+	
+				<div class="p-2">
+					<button type="button" class="btn btn-outline-primary" id="hall-of-fame-btn">
+						Hall of fame
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-            <div class="p-2">
-                <button type="button" class="btn btn-outline-warning" data-toggle="modal"
-                    data-target="#powerLegendModal">
-                    Power Legend
-                </button>
-            </div>
-
-            <div class="p-2">
-                <button type="button" class="btn btn-outline-primary" id="hall-of-fame-btn">
-                    Hall of fame
-                </button>
-            </div>
-
-        </div>
-    </div>
+	<div id="gameplay" class="d-none">
+		<canvas style="z-index: 1; position: absolute;" id="stage_canvas" width="600px" height="400px"></canvas>
+		<canvas style="z-index: 2; position: absolute;" id="canvas" width="600px" height="400px"></canvas>
+		<canvas style="z-index: 3; position: absolute;" id="bat_canvas" width="600px" height="400px"></canvas>
+	
+		<button class="btn btn-outline-success centered d-none" style="z-index: 4" id="main_menu_btn">Main Menu</button>
+	</div>
 
     <!-- Power legend dialog -->
     <div class="modal fade" id="powerLegendModal" tabindex="-1" role="dialog" aria-labelledby="powerLegendModalLabel"
@@ -174,6 +196,54 @@
             </div>
         </div>
     </div>
+
+	<!-- Prompt for username for score setting -->
+	<div class="modal fade" id="usernamePromptModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalLabel">Save your score</h5>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-12">
+							<label id="label-for-username" for="username">You scored 5 on the last game. State your name to
+								store the score.</label>
+						</div>
+						<div class="col-12">
+							<input type="hidden" id="score">
+							<input type="text" id="username" placeholder="Your name" class="form-control">
+						</div>
+					</div>
+	
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Save Score</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Resources -->
+	<img src="./images/heart_40x40.png" style="display: none;" id="heart_image" alt="">
+    <img src="./images/game_over.png" style="display: none;" id="game_over_image" alt="">
+
+    <img src="./images/power/add_life_45x45.png" style="display: none;" id="power_img_1" alt="">
+    <img src="./images/power/skull_45x45.png" style="display: none;" id="power_img_2" alt="">
+    <img src="./images/power/size_up_45x45.png" style="display: none;" id="power_img_3" alt="">
+    <img src="./images/power/size_down_45x45.png" style="display: none;" id="power_img_4" alt="">
+    <img src="./images/power/big_ball_45x45.png" style="display: none;" id="power_img_5" alt="">
+    <img src="./images/power/small_ball_45x45.png" style="display: none;" id="power_img_6" alt="">
+    <img src="./images/power/rocket_45x45.png" style="display: none;" id="power_img_7" alt="">
+    <img src="./images/power/snail_45x45.png" style="display: none;" id="power_img_8" alt="">
+    <img src="./images/power/add_ball_45x45.png" style="display: none;" id="power_img_9" alt="">
+
+    <audio src="sound/ball_bat_hit.mp3" id="ball_bat_hit"></audio>
+    <audio src="sound/ball_bounce.mp3" id="ball_bounce"></audio>
+    <audio src="sound/gameplay_pursuit.mp3" id="gameplay_pursuit"></audio>
+    <audio src="sound/gameplay_mission.mp3" id="gameplay_mission"></audio>
+    <audio src="sound/electric_zap_2.mp3" id="electric_zap_2"></audio>
 
 </body>
 

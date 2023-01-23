@@ -8,7 +8,7 @@
     <script type="text/javascript" src="./lib/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="./css/index.css">
 
-    <script type="text/javascript" src="./js/api.js"></script>
+	<script type="text/javascript" src="./js/game-essentials/score_manager.js"></script>
     <script type="text/javascript" src="./js/index.js"></script>
 </head>
 
@@ -33,85 +33,13 @@
             </div>
 
             <div class="p-2">
-                <button type="button" class="btn btn-outline-primary" id="hall-of-fame-btn" data-toggle="modal"
-                    data-target="#hallOfFameModal">
+                <button type="button" class="btn btn-outline-primary" id="hall-of-fame-btn">
                     Hall of fame
                 </button>
             </div>
 
         </div>
     </div>
-
-
-
-    <!-- Register dialog -->
-    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="register-form">
-                        <div class="form-group">
-                            <label for="register-name" class="col-form-label">Name</label>
-                            <input type="text" class="form-control" id="register-name" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="register-email" class="col-form-label">Email:</label>
-                            <input type="text" class="form-control" id="register-email" name="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="register-password" class="col-form-label">Password:</label>
-                            <input type="password" class="form-control" id="register-password" name="password">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal"
-                        id="register-btn">Register</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Login dialog -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="login-form">
-                        <div class="form-group">
-                            <label for="login-email" class="col-form-label">Email:</label>
-                            <input type="text" class="form-control" id="login-email" name="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="login-password" class="col-form-label">Password:</label>
-                            <input type="password" class="form-control" id="login-password" name="password">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="login-btn">Login</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <!-- Power legend dialog -->
     <div class="modal fade" id="powerLegendModal" tabindex="-1" role="dialog" aria-labelledby="powerLegendModalLabel"
@@ -125,12 +53,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table">
+                    <table class="table table-striped">
                         <thead>
-                            <!-- <tr>
+                            <tr>
                                 <th>Legend</th>
                                 <th>Meaning</th>
-                            </tr> -->
+                            </tr>
                         </thead>
                         <tbody>
                             <tr>
@@ -233,7 +161,6 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Score</th>
-                                <th>Scored At</th>
                             </tr>
                         </thead>
                         <tbody id="hall-of-fame-tbody">
@@ -242,34 +169,6 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- forgot password dialog -->
-    <div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgotModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="forogtModalLabel">Forgot password</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="reset-password-form">
-                        <div class="form-group">
-                            <label for="forgot-email" class="col-form-label">Email:</label>
-                            <input type="text" class="form-control" id="forgot-email" name="email">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="reset-password-btn">Reset
-                        Password</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>

@@ -162,7 +162,6 @@ Game.prototype.operateBall = function () {
 	}
 }
 
-
 Game.prototype.operatePower = function () {
 	if (this.curState == this.state.running && this.currentPower) {
 
@@ -340,6 +339,7 @@ Game.prototype.draw = function () {
 		this.drawGameOver()
 		this.drawScore()
 		this.drawStageName()
+		this.bat.clearCanvas()
 	} else {
 		this.drawLife()
 		this.drawScore()

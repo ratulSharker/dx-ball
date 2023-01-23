@@ -2,12 +2,12 @@ $(document).ready(function () {
 
 	// setup gameplay
 	var game = new Game(window.innerWidth, window.innerHeight, $("#canvas")[0], $("#bat_canvas")[0], $("#stage_canvas")[0])
-	const fps = 60
-	var intervalId = setInterval(gameloop, 1000 / fps)
+	window.requestAnimationFrame(gameloop);
 
 	// Events
 	function gameloop() {
 		game.draw()
+		window.requestAnimationFrame(gameloop);
 	}
 
 	$(window).resize(function () {
@@ -27,11 +27,10 @@ $(document).ready(function () {
 	game.on("no_more_life", gameCompletedEitherAllStageCompletedOrNoMoreLife)
 
 	function gameCompletedEitherAllStageCompletedOrNoMoreLife(score) {
-		// TODO: Why need this inside of a `setTimeout` ?
-		setTimeout(function () {
-			clearInterval(intervalId)
-			updateScore(score)
-		}, 500)
+		$("body").off("mousemove");
+		$("body").off("mouseup");
+		$(window).off("resize");
+		updateScore(score);
 	}
 
 	function updateScore(score) {

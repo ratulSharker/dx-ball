@@ -27,10 +27,10 @@ $(document).ready(function () {
 	game.on("no_more_life", gameCompletedEitherAllStageCompletedOrNoMoreLife)
 
 	function gameCompletedEitherAllStageCompletedOrNoMoreLife(score) {
-		// TODO: Why need this inside of a `setTimeout` ?
-		setTimeout(function () {
-			updateScore(score)
-		}, 500)
+		$("body").off("mousemove");
+		$("body").off("mouseup");
+		$(window).off("resize");
+		updateScore(score);
 	}
 
 	function updateScore(score) {

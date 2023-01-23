@@ -84,7 +84,7 @@ Bat.prototype.repositionBatInsideWindow = function() {
 }
 
 Bat.prototype.draw = function() {
-	this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
+	this.clearCanvas()
 
 	this.ctx.fillStyle = "#b89ae4"
 
@@ -94,6 +94,10 @@ Bat.prototype.draw = function() {
 		this.rect.width,
 		this.rect.height
 	)
+}
+
+Bat.prototype.clearCanvas = function() {
+	this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
 }
 
 Bat.prototype.centerTop = function() {

@@ -54,7 +54,34 @@ function Game(windowWidth, windowHeight, canvas, batCanvas, stageCanvas) {
 	this.soundMgr = new Sound()
 
 	// stage setup
-	this.initialStageSetup(windowWidth, windowHeight, stageCanvas)
+	this.currentStage = 0
+	this.stage = new Stage(windowWidth, windowHeight, stageDatas[this.currentStage], stageCanvas)
+	var self = this
+	this.stage.on("end", function () {
+		self.moveToNextStage()
+	})
+	this.lastBrickCrackingHandler = undefined
+	this.stage.on("last_brick", function (lastBrickRect) {
+		self.handleLastBrickRemaining(lastBrickRect)
+	})
+}
+
+Game.prototype.reset = function() {
+	this.curState = this.state.waiting;
+	this.lifeCount = 2;
+
+	this.balls = []
+	this.balls.push(new Ball())
+
+	this.currentPower = undefined
+
+	this.currentStage = 0
+
+	this.lastBrickCrackingHandler = undefined
+}
+
+Game.prototype.continueGameLoop = function() {
+	return this.curState == this.state.running;
 }
 
 Game.prototype.windowResized = function (windowWidth, windowHeight) {
